@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "317130011124",
+    "project_id": "shoghlak-32631",
+    "storage_bucket": "shoghlak-32631.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317130011124:android:4e49d81669f29ffd8c09a1",
+        "android_client_info": {
+          "package_name": "com.example.shoghlak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317130011124-0dsbhp286pciu60baqk4a584ht99nn2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-V0QwkPFMO83SoO6IcCaIFdzejMpNJhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317130011124-0dsbhp286pciu60baqk4a584ht99nn2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
