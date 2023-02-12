@@ -16,6 +16,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../../../consts.dart';
 import '../../../../../../domin/entities/comment/comment_entity.dart';
+import '../../../../../../on_generate_route.dart';
 import '../../../../../widgets/form_container_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -59,7 +60,6 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ContainerWidget(
-              //////
               width: 40,
               height: 40,
               widget: ClipRRect(
@@ -153,10 +153,9 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                           );
                         }
                         if (replyState is ReplyLoading) {
-                          return const CircularProgressIndicatorWidget();
-                        } else {
                           return const ContainerWidget(width: 0, height: 0);
                         }
+                        return const ContainerWidget(width: 0, height: 0);
                       },
                     ),
                     _isUserReplaying == true ? sizeVer(10) : sizeVer(0),
@@ -237,7 +236,12 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(
+                                  context, ScreenName.editReplyScreen,
+                                  arguments: reply)
+                              .then((value) => setState(() {})); 
+                        },
                         child: const TextWidget(
                           txt: "Update Reply",
                           fontWeight: FontWeight.w500,
