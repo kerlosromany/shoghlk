@@ -295,7 +295,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Stream<List<PostEntity>> readSinglePost(String postId) {
     final postCollection = firebaseFirestore
         .collection(FirebaseConsts.posts)
-        .orderBy("createAt", descending: true)
+        
         .where("postId", isEqualTo: postId);
     return postCollection.snapshots().map((querySnapshot) =>
         querySnapshot.docs.map((e) => PostModel.fromSnapshot(e)).toList());
@@ -327,6 +327,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
     postCollection.doc(post.postId).update(postInfo);
   }
+
+  // comments
 
   @override
   Future<void> createComment(CommentEntity comment) async {
@@ -446,6 +448,9 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     commentCollection.doc(comment.commentId).update(commentInfo);
   }
 
+
+    // reply
+
   @override
   Future<void> createReply(ReplyEntity reply) async {
     final replyCollection = firebaseFirestore
@@ -469,7 +474,18 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     try {
       final replyDocRef = await replyCollection.doc(reply.replyId).get();
       if (!replyDocRef.exists) {
-        replyCollection.doc(reply.replyId).set(newReply);
+        replyCollection.doc(reply.replyId).set(newReply).then((value) {
+          final comment = firebaseFirestore
+              .collection(FirebaseConsts.posts)
+              .doc(reply.postId).collection(FirebaseConsts.comments).doc(reply.commentId);
+          comment.get().then((value) {
+            if (value.exists) {
+              final totalReplys = value.get("totalReplies");
+              comment.update({"totalReplies": totalReplys + 1});
+              return;
+            }
+          });
+        });
       } else {
         replyCollection.doc(reply.replyId).update(newReply);
       }
@@ -488,7 +504,18 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         .collection(FirebaseConsts.replies);
 
     try {
-      replyCollection.doc(reply.replyId).delete();
+      replyCollection.doc(reply.replyId).delete().then((value) {
+       final comment = firebaseFirestore
+              .collection(FirebaseConsts.posts)
+              .doc(reply.postId).collection(FirebaseConsts.comments).doc(reply.commentId);
+          comment.get().then((value) {
+            if (value.exists) {
+              final totalReplys = value.get("totalReplies");
+              comment.update({"totalReplies": totalReplys - 1});
+              return;
+            }
+          });
+      });
     } catch (e) {
       print("some errors occured while deleting reply $e");
     }

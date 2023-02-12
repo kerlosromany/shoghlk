@@ -8,18 +8,20 @@ import 'package:shoghlak/presentation/cubits/comment/comment_cubit.dart';
 import 'package:shoghlak/presentation/cubits/comment/comment_states.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_states.dart';
+import 'package:shoghlak/presentation/cubits/reply/reply_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_states.dart';
-import 'package:shoghlak/presentation/pages/main_screens/post/comments/single_comment_widget.dart';
+import 'package:shoghlak/presentation/pages/main_screens/post/comments/widgets/single_comment_widget.dart';
 import 'package:shoghlak/presentation/pages/main_screens/profile/widgets/profile_widget.dart';
 import 'package:shoghlak/presentation/widgets/circular_progress_indicator.dart';
 import 'package:shoghlak/presentation/widgets/container_widget.dart';
-import 'package:shoghlak/presentation/widgets/form_container_widget.dart';
 import 'package:shoghlak/presentation/widgets/text_widget.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../../consts.dart';
 import '../../../../../../domin/entities/user/user_entity.dart';
+
+import 'package:shoghlak/injection_container.dart' as di;
 
 class CommentMainWidget extends StatefulWidget {
   final AppEntity appEntity;
@@ -85,7 +87,6 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                   Row(
                                     children: [
                                       ContainerWidget(
-                                        //////
                                         width: 40,
                                         height: 40,
                                         widget: ClipRRect(
@@ -95,7 +96,6 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                       ),
                                       sizeHor(10),
                                       TextWidget(
-                                        //////
                                         txt: singlePost.userName,
                                         fontsize: 15,
                                         fontWeight: FontWeight.bold,
@@ -104,7 +104,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                   ),
                                   sizeVer(10),
                                   TextWidget(
-                                    txt: singlePost.description, //////
+                                    txt: singlePost.description, 
                                   ),
                                 ],
                               ),
@@ -123,14 +123,18 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                   }
                                   final singelComment =
                                       commentState.comments[index];
-                                  return SingleCommentWidget(
-                                    comment: singelComment,
-                                    onLongPressListener: () {
-                                      _openBottomModalSheet(
-                                          context: context,
-                                          comment:
-                                              commentState.comments[index]);
-                                    },
+                                  return BlocProvider(
+                                    create: (context) => di.sl<ReplyCubit>(),
+                                    child: SingleCommentWidget(
+                                      comment: singelComment,
+                                      onLongPressListener: () {
+                                        _openBottomModalSheet(
+                                            context: context,
+                                            comment:
+                                                commentState.comments[index]);
+                                      },
+                                      currentUser: singleUser,
+                                    ),
                                   );
                                 },
                                 itemCount: commentState.comments.length,

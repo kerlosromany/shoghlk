@@ -11,12 +11,17 @@ import 'package:shoghlak/domin/use_cases/post/like_post_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/read_posts_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/read_single_post_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/update_post_usecase.dart';
+import 'package:shoghlak/domin/use_cases/reply/create_reply_usecase.dart';
+import 'package:shoghlak/domin/use_cases/reply/delete_reply_usecase.dart';
+import 'package:shoghlak/domin/use_cases/reply/read_replys_usecase.dart';
+import 'package:shoghlak/domin/use_cases/reply/update_reply_usecase.dart';
 import 'package:shoghlak/domin/use_cases/storage/upload_image_to_storage_usecase.dart';
 import 'package:shoghlak/presentation/cubits/auth/auth_cubit.dart';
 import 'package:shoghlak/presentation/cubits/comment/comment_cubit.dart';
 import 'package:shoghlak/presentation/cubits/credential/credential_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_cubit.dart';
+import 'package:shoghlak/presentation/cubits/reply/reply_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/user_cubit.dart';
 
@@ -89,6 +94,16 @@ Future<void> init() async {
     ),
   );
 
+  //reply cubit injection
+  sl.registerFactory(
+    () => ReplyCubit(
+      createReplyUseCase: sl.call(),
+      deleteReplyUseCase: sl.call(),
+      readReplysUseCase: sl.call(),
+      updateReplyUseCase: sl.call(),
+    ),
+  );
+
   // Use Cases
   sl.registerLazySingleton(() => SignOutUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
@@ -125,7 +140,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => LikePostUseCase(firebaseRepository: sl.call()));
 
-  // comment use case
+  // comment use cases
   sl.registerLazySingleton(
       () => CreateCommentUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
@@ -136,6 +151,17 @@ Future<void> init() async {
       () => UpdateCommentUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
       () => LikeCommentUseCase(firebaseRepository: sl.call()));
+
+  // reply use cases
+  sl.registerLazySingleton(
+      () => CreateReplyUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
+      () => DeleteReplyUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
+      () => UpdateReplyUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
+      () => ReadReplysUseCase(firebaseRepository: sl.call()));
+
 
   // firebase repo
   sl.registerLazySingleton<FirebaseRepository>(
