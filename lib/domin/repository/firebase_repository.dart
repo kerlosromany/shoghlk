@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:shoghlak/domin/entities/post/post_entity.dart';
 
 import '../entities/comment/comment_entity.dart';
+import '../entities/reply/reply.dart';
 import '../entities/user/user_entity.dart';
 
 abstract class FirebaseRepository {
@@ -28,8 +29,8 @@ abstract class FirebaseRepository {
   Future<void> deletePost(PostEntity post);
   Future<void> updatePost(PostEntity post);
   Stream<List<PostEntity>> readPosts(PostEntity post);
+  Stream<List<PostEntity>> readSinglePost(String postId);
   Future<void> likePost(PostEntity post);
-
 
   // Comment Features
   Future<void> createComment(CommentEntity comment);
@@ -37,4 +38,10 @@ abstract class FirebaseRepository {
   Future<void> updateComment(CommentEntity comment);
   Stream<List<CommentEntity>> readComments(String postId);
   Future<void> likeComment(CommentEntity comment);
+
+  // Reply Features
+  Future<void> createReply(ReplyEntity reply);
+  Future<void> deleteReply(ReplyEntity reply);
+  Future<void> updateReply(ReplyEntity reply);
+  Stream<List<ReplyEntity>> readReplys(ReplyEntity reply);
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:shoghlak/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:shoghlak/domin/entities/comment/comment_entity.dart';
 import 'package:shoghlak/domin/entities/post/post_entity.dart';
+import 'package:shoghlak/domin/entities/reply/reply.dart';
 import 'package:shoghlak/domin/entities/user/user_entity.dart';
 import 'package:shoghlak/domin/repository/firebase_repository.dart';
 
@@ -87,4 +88,26 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Future<void> updateComment(CommentEntity comment) async =>
       remoteDataSource.updateComment(comment);
+
+  @override
+  Stream<List<PostEntity>> readSinglePost(String postId) =>
+      remoteDataSource.readSinglePost(postId);
+
+
+  // Replys 
+  @override
+  Future<void> createReply(ReplyEntity reply) async =>
+      remoteDataSource.createReply(reply);
+
+  @override
+  Future<void> deleteReply(ReplyEntity reply) async =>
+      remoteDataSource.deleteReply(reply);
+
+  @override
+  Stream<List<ReplyEntity>> readReplys(ReplyEntity reply) =>
+      remoteDataSource.readReplys(reply);
+
+  @override
+  Future<void> updateReply(ReplyEntity reply) async =>
+      remoteDataSource.updateReply(reply);
 }

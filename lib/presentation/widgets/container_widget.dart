@@ -15,6 +15,7 @@ class ContainerWidget extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;
   final Widget? widget;
   final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final BoxShape? boxShape;
   final VoidCallback? onTapListener;
 
@@ -31,6 +32,7 @@ class ContainerWidget extends StatelessWidget {
     this.padding,
     this.boxShape,
     this.onTapListener,
+    this.margin,
   }) : super(key: key);
 
   @override
@@ -39,6 +41,7 @@ class ContainerWidget extends StatelessWidget {
       onTap: onTapListener,
       child: Container(
         padding: padding,
+        margin: margin,
         alignment: alignment,
         width: width,
         height: height,

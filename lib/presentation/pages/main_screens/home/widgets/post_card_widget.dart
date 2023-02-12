@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:shoghlak/domin/entities/post/post_entity.dart';
 import 'package:shoghlak/domin/use_cases/user/get_current_uid_usecase.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
-import 'package:shoghlak/presentation/cubits/post/post_states.dart';
 import 'package:shoghlak/presentation/pages/main_screens/profile/widgets/profile_widget.dart';
 import 'package:shoghlak/presentation/widgets/icon_widget.dart';
 import 'package:shoghlak/presentation/widgets/text_widget.dart';
 
 import '../../../../../consts.dart';
+import '../../../../../domin/entities/app_entity.dart';
 import '../../../../../on_generate_route.dart';
 import '../../../../widgets/container_widget.dart';
 
@@ -134,7 +134,11 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(
-                                context, ScreenName.commentsScreen);
+                                context, ScreenName.commentsScreen,
+                                arguments: AppEntity(
+                                  uid: _currentUid,
+                                  postId: widget.post.postId,
+                                ));
                           },
                           child: const IconWidget(
                               icon: Icons.comment_bank_outlined,
@@ -152,9 +156,21 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     txt: "${widget.post.totalLikes} Likes",
                     color: primaryColor.withOpacity(0.8)),
                 sizeVer(5),
-                TextWidget(
-                    txt: "view all ${widget.post.totalComments} comments",
-                    color: primaryColor.withOpacity(0.8)),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      ScreenName.commentsScreen,
+                      arguments: AppEntity(
+                        uid: _currentUid,
+                        postId: widget.post.postId,
+                      ),
+                    );
+                  },
+                  child: TextWidget(
+                      txt: "view all ${widget.post.totalComments} comments",
+                      color: primaryColor.withOpacity(0.8)),
+                ),
                 sizeVer(5),
                 TextWidget(
                     txt: DateFormat.yMMMd()

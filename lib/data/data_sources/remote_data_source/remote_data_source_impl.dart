@@ -6,9 +6,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shoghlak/consts.dart';
 import 'package:shoghlak/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:shoghlak/data/models/post/post_model.dart';
+import 'package:shoghlak/data/models/reply/reply_model.dart';
 import 'package:shoghlak/data/models/user/user_model.dart';
 import 'package:shoghlak/domin/entities/comment/comment_entity.dart';
 import 'package:shoghlak/domin/entities/post/post_entity.dart';
+import 'package:shoghlak/domin/entities/reply/reply.dart';
 import 'package:shoghlak/domin/entities/user/user_entity.dart';
 import 'package:uuid/uuid.dart';
 
@@ -290,6 +292,16 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
+  Stream<List<PostEntity>> readSinglePost(String postId) {
+    final postCollection = firebaseFirestore
+        .collection(FirebaseConsts.posts)
+        .orderBy("createAt", descending: true)
+        .where("postId", isEqualTo: postId);
+    return postCollection.snapshots().map((querySnapshot) =>
+        querySnapshot.docs.map((e) => PostModel.fromSnapshot(e)).toList());
+  }
+
+  @override
   Future<void> updatePost(PostEntity post) async {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.posts);
     Map<String, dynamic> postInfo = {};
@@ -413,7 +425,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     final commentCollection = firebaseFirestore
         .collection(FirebaseConsts.posts)
         .doc(postId)
-        .collection(FirebaseConsts.comments);
+        .collection(FirebaseConsts.comments)
+        .orderBy("createAt", descending: true);
 
     return commentCollection.snapshots().map((querySnapshot) =>
         querySnapshot.docs.map((e) => CommentModel.fromSnapshot(e)).toList());
@@ -431,5 +444,82 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       commentInfo['description'] = comment.description;
     }
     commentCollection.doc(comment.commentId).update(commentInfo);
+  }
+
+  @override
+  Future<void> createReply(ReplyEntity reply) async {
+    final replyCollection = firebaseFirestore
+        .collection(FirebaseConsts.posts)
+        .doc(reply.postId)
+        .collection(FirebaseConsts.comments)
+        .doc(reply.commentId)
+        .collection(FirebaseConsts.replies);
+
+    final newReply = ReplyModel(
+      createAt: reply.createAt,
+      creatorUid: reply.creatorUid,
+      description: reply.description,
+      commentId: reply.commentId,
+      userName: reply.userName,
+      userProfileUrl: reply.userProfileUrl,
+      postId: reply.postId,
+      replyId: reply.replyId,
+    ).toJson();
+
+    try {
+      final replyDocRef = await replyCollection.doc(reply.replyId).get();
+      if (!replyDocRef.exists) {
+        replyCollection.doc(reply.replyId).set(newReply);
+      } else {
+        replyCollection.doc(reply.replyId).update(newReply);
+      }
+    } catch (e) {
+      print("some errors occured while creating reply $e");
+    }
+  }
+
+  @override
+  Future<void> deleteReply(ReplyEntity reply) async {
+    final replyCollection = firebaseFirestore
+        .collection(FirebaseConsts.posts)
+        .doc(reply.postId)
+        .collection(FirebaseConsts.comments)
+        .doc(reply.commentId)
+        .collection(FirebaseConsts.replies);
+
+    try {
+      replyCollection.doc(reply.replyId).delete();
+    } catch (e) {
+      print("some errors occured while deleting reply $e");
+    }
+  }
+
+  @override
+  Stream<List<ReplyEntity>> readReplys(ReplyEntity reply) {
+    final replyCollection = firebaseFirestore
+        .collection(FirebaseConsts.posts)
+        .doc(reply.postId)
+        .collection(FirebaseConsts.comments)
+        .doc(reply.commentId)
+        .collection(FirebaseConsts.replies);
+
+    return replyCollection.snapshots().map((querySnapshot) =>
+        querySnapshot.docs.map((e) => ReplyModel.fromSnapshot(e)).toList());
+  }
+
+  @override
+  Future<void> updateReply(ReplyEntity reply) async {
+    final replyCollection = firebaseFirestore
+        .collection(FirebaseConsts.posts)
+        .doc(reply.postId)
+        .collection(FirebaseConsts.comments)
+        .doc(reply.commentId)
+        .collection(FirebaseConsts.replies);
+
+    Map<String, dynamic> replyInfo = {};
+    if (reply.description != "" && reply.description != null) {
+      replyInfo['description'] = reply.description;
+    }
+    replyCollection.doc(reply.replyId).update(replyInfo);
   }
 }

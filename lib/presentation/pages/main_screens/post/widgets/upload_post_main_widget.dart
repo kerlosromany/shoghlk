@@ -55,6 +55,8 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
   final TextEditingController _communicationLinkController =
       TextEditingController();
 
+  
+
   bool _uploading = false;
 
   final _formKey = GlobalKey<FormState>();

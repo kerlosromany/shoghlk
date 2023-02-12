@@ -1,162 +1,34 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoghlak/presentation/cubits/comment/comment_cubit.dart';
+import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
+import 'package:shoghlak/presentation/pages/main_screens/post/comments/widgets/comment_main_widget.dart';
 
-import '../../../../../consts.dart';
-import '../../../../widgets/form_container_widget.dart';
+import '../../../../../domin/entities/app_entity.dart';
+import 'package:shoghlak/injection_container.dart' as di;
 
+import '../../../../cubits/post/single_post/single_post_cubit.dart';
 
-class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({Key? key}) : super(key: key);
+class CommentScreen extends StatelessWidget {
+  final AppEntity appEntity;
+  const CommentScreen({super.key, required this.appEntity});
 
-  @override
-  State<CommentsScreen> createState() => _CommentsScreenState();
-}
-
-class _CommentsScreenState extends State<CommentsScreen> {
-
-  bool _isUserReplaying = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backGroundColor,
-      appBar: AppBar(
-        backgroundColor: backGroundColor,
-        title: const Text("Comments"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                          color: secondaryColor,
-                          shape: BoxShape.circle
-                      ),
-                    ),
-                    sizeHor(10),
-                    const Text("Username", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: primaryColor),),
-
-                  ],
-                ),
-                sizeVer(10),
-                const Text("This is very beautiful place", style: TextStyle(color: primaryColor),),
-              ],
-            ),
-          ),
-          sizeVer(10),
-          const Divider(
-            color: secondaryColor
-          ),
-          sizeVer(10),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                        color: secondaryColor,
-                        shape: BoxShape.circle
-                    ),
-                  ),
-                  sizeHor(10),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text("Username", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: primaryColor),),
-                              Icon(Icons.favorite_outline, size: 20, color: darkGreyColor,)
-                            ],
-                          ),
-                          sizeVer(4),
-                          const Text("This is comment", style: TextStyle(color: primaryColor),),
-                          sizeVer(4),
-                          Row(
-                            children: [
-                              const Text("08/07/2022", style: TextStyle(color: darkGreyColor, fontSize: 12),),
-                              sizeHor(15),
-                              GestureDetector(onTap: () {
-                                setState(() {
-                                  _isUserReplaying = !_isUserReplaying;
-                                });
-                              },child: const Text("Replay", style: TextStyle(color: darkGreyColor, fontSize: 12),)),
-                              sizeHor(15),
-                              const Text("View Replays", style: TextStyle(color: darkGreyColor, fontSize: 12),),
-
-                            ],
-                          ),
-                          _isUserReplaying == true? sizeVer(10) : sizeVer(0),
-                          _isUserReplaying == true? Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const FormContainerWidget(hintText: "Post your replay..."),
-                              sizeVer(10),
-                              const Text(
-                                "Post",
-                                style: TextStyle(color: blueColor),
-                              )
-                            ],
-                          ) : const SizedBox(width: 0, height: 0,)
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          _commentSection()
-        ],
-      ),
-    );
-  }
-
-  _commentSection() {
-    return Container(
-      width: double.infinity,
-      height: 55,
-      color: Colors.grey[800],
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: secondaryColor,
-                  borderRadius: BorderRadius.circular(20)
-              ),
-            ),
-            sizeHor(10),
-            Expanded(
-                child: TextFormField(
-                  style: const TextStyle(color: primaryColor),
-                  decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Post your comment...",
-                      hintStyle: TextStyle(color: secondaryColor)
-                  ),
-                )),
-            const Text("Post", style: TextStyle(fontSize: 15, color: blueColor),)
-          ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CommentCubit>(
+          create: (context) => di.sl<CommentCubit>(),
         ),
-      ),
+        BlocProvider<GetSingleUserCubit>(
+          create: (context) => di.sl<GetSingleUserCubit>(),
+        ),
+        BlocProvider<GetSinglePostCubit>(
+          create: (context) => di.sl<GetSinglePostCubit>(),
+        ),
+      ],
+      child: CommentMainWidget(appEntity: appEntity),
     );
   }
 }

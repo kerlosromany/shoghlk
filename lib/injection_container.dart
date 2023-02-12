@@ -2,15 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shoghlak/domin/use_cases/comment/create_comment_usecase.dart';
+import 'package:shoghlak/domin/use_cases/comment/delete_comment_usecase.dart';
+import 'package:shoghlak/domin/use_cases/comment/read_comments_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/create_post_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/delete_post_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/like_post_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/read_posts_usecase.dart';
+import 'package:shoghlak/domin/use_cases/post/read_single_post_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/update_post_usecase.dart';
 import 'package:shoghlak/domin/use_cases/storage/upload_image_to_storage_usecase.dart';
 import 'package:shoghlak/presentation/cubits/auth/auth_cubit.dart';
+import 'package:shoghlak/presentation/cubits/comment/comment_cubit.dart';
 import 'package:shoghlak/presentation/cubits/credential/credential_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
+import 'package:shoghlak/presentation/cubits/post/single_post/single_post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/user_cubit.dart';
 
@@ -18,6 +24,8 @@ import 'data/data_sources/remote_data_source/remote_data_source.dart';
 import 'data/data_sources/remote_data_source/remote_data_source_impl.dart';
 import 'data/repository/firebase_repository_impl.dart';
 import 'domin/repository/firebase_repository.dart';
+import 'domin/use_cases/comment/like_comment_usecase.dart';
+import 'domin/use_cases/comment/update_comment_usecase.dart';
 import 'domin/use_cases/user/create_user_usecase.dart';
 import 'domin/use_cases/user/get_current_uid_usecase.dart';
 import 'domin/use_cases/user/get_single_user_usecase.dart';
@@ -66,6 +74,21 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerFactory(
+    () => GetSinglePostCubit(readSinglePostUseCase: sl.call()),
+  );
+
+  //comment cubit injection
+  sl.registerFactory(
+    () => CommentCubit(
+      createCommentUseCase: sl.call(),
+      deleteCommentUseCase: sl.call(),
+      likeCommentUseCase: sl.call(),
+      readCommentsUseCase: sl.call(),
+      updateCommentUseCase: sl.call(),
+    ),
+  );
+
   // Use Cases
   sl.registerLazySingleton(() => SignOutUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
@@ -89,8 +112,6 @@ Future<void> init() async {
       () => UploadImageToStorageUseCase(firebaseRepository: sl.call()));
 
   // post use case
-  
-  // cloud storage
   sl.registerLazySingleton(
       () => CreatePostUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
@@ -98,12 +119,25 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => ReadPostsUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
+      () => ReadSinglePostUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
       () => UpdatePostUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
       () => LikePostUseCase(firebaseRepository: sl.call()));
 
+  // comment use case
+  sl.registerLazySingleton(
+      () => CreateCommentUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
+      () => DeleteCommentUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
+      () => ReadCommentsUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
+      () => UpdateCommentUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
+      () => LikeCommentUseCase(firebaseRepository: sl.call()));
 
-  // firebase repo 
+  // firebase repo
   sl.registerLazySingleton<FirebaseRepository>(
       () => FirebaseRepositoryImpl(remoteDataSource: sl.call()));
 

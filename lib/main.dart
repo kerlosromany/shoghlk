@@ -15,6 +15,7 @@ import 'package:shoghlak/presentation/pages/main_screens/main_screen.dart';
 
 import 'on_generate_route.dart';
 import 'injection_container.dart' as di;
+import 'presentation/cubits/comment/comment_cubit.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.sl<UserCubit>()),
         BlocProvider(create: (_) => di.sl<GetSingleUserCubit>()),
         BlocProvider(create: (context) => di.sl<PostCubit>()..getPosts(post: PostEntity())),
+        
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
