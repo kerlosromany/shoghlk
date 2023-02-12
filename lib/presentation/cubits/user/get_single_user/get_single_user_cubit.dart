@@ -19,9 +19,10 @@ class GetSingleUserCubit extends Cubit<GetSingleUserStates> {
     try {
       final streamResponse = getSingleUserUseCase.call(uid);
       streamResponse.listen((users) {
-        emit(GetSingleUserLoaded(user: users.firstWhere((element) => element.uid == uid , orElse:() => UserModel()) ));
+        if (!isClosed) {
+          emit(GetSingleUserLoaded(user: users.first));
+        }
       });
-      
     } on SocketException catch (_) {
       emit(GetSingleUserFailure());
     } catch (_) {

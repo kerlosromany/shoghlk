@@ -71,12 +71,15 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                         ),
                       ],
                     ),
-                    InkWell(
-                        onTap: () {
-                          _openBottomModalSheet(context);
-                        },
-                        child: const IconWidget(
-                            icon: Icons.more_vert, color: primaryColor)),
+                    widget.post.creatorUid == _currentUid
+                        ? GestureDetector(
+                            onTap: () {
+                              _openBottomModalSheet(context);
+                            },
+                            child: const IconWidget(
+                                icon: Icons.more_vert, color: primaryColor),
+                          )
+                        : const TextWidget(txt: ""),
                   ],
                 ),
                 sizeVer(20),
@@ -212,7 +215,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     sizeVer(8),
                     GestureDetector(
                       onTap: () {
-                        _deletePost(context);
+                        _deletePost();
                       },
                       child: const Padding(
                         padding: EdgeInsets.only(left: 10.0),
@@ -252,7 +255,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
         });
   }
 
-  _deletePost(BuildContext context) {
+  _deletePost() {
     BlocProvider.of<PostCubit>(context)
         .deletePost(post: PostEntity(postId: widget.post.postId));
   }

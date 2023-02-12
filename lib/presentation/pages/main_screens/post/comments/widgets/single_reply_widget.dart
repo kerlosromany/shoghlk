@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:intl/intl.dart';
 import 'package:shoghlak/domin/entities/reply/reply.dart';
 
 import '../../../../../../consts.dart';
+import '../../../../../../domin/use_cases/user/get_current_uid_usecase.dart';
 import '../../../../../widgets/container_widget.dart';
-import '../../../../../widgets/form_container_widget.dart';
+import 'package:shoghlak/injection_container.dart' as di;
 import '../../../../../widgets/text_widget.dart';
 import '../../../profile/widgets/profile_widget.dart';
 
@@ -20,10 +20,24 @@ class SingleReplyWidget extends StatefulWidget {
 }
 
 class _SingleReplyWidgetState extends State<SingleReplyWidget> {
+
+  String _currentUid = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    di.sl<GetCurrentUidUseCase>().call().then((value) {
+      setState(() {
+        _currentUid = value;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onLongPress: widget.onLongPressListener,
+      onLongPress: widget.reply.creatorUid == _currentUid ? widget.onLongPressListener : null,
       child: ContainerWidget(
         margin: const EdgeInsets.only(left: 10, top: 10),
         widget: Row(

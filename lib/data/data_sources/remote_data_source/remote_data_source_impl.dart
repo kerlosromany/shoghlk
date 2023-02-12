@@ -239,13 +239,23 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     try {
       final postDocRef = await postCollection.doc(post.postId).get();
       if (!postDocRef.exists) {
-        postCollection.doc(post.postId).set(newPost);
+        postCollection.doc(post.postId).set(newPost).then((value) {
+          final userCollection = firebaseFirestore
+              .collection(FirebaseConsts.users)
+              .doc(post.creatorUid);
+          userCollection.get().then((value) {
+            if (value.exists) {
+              final totalPosts = value.get("totalPosts");
+              userCollection.update({"totalPosts": totalPosts + 1});
+              return;
+            }
+          });
+        });
       } else {
         postCollection.doc(post.postId).update(newPost);
       }
     } catch (e) {
       print("some errors occured while creating post $e");
-      toast("some errors occured while creating post $e");
     }
   }
 
@@ -253,10 +263,20 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Future<void> deletePost(PostEntity post) async {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.posts);
     try {
-      postCollection.doc(post.postId).delete();
+      postCollection.doc(post.postId).delete().then((value) {
+        final userCollection = firebaseFirestore
+            .collection(FirebaseConsts.users)
+            .doc(post.creatorUid);
+        userCollection.get().then((value) {
+          if (value.exists) {
+            final totalPosts = value.get("totalPosts");
+            userCollection.update({"totalPosts": totalPosts - 1});
+            return;
+          }
+        });
+      });
     } catch (e) {
       print("some errors occured while deleting post $e");
-      toast("some errors occured while deleting post $e");
     }
   }
 
@@ -295,7 +315,6 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Stream<List<PostEntity>> readSinglePost(String postId) {
     final postCollection = firebaseFirestore
         .collection(FirebaseConsts.posts)
-        
         .where("postId", isEqualTo: postId);
     return postCollection.snapshots().map((querySnapshot) =>
         querySnapshot.docs.map((e) => PostModel.fromSnapshot(e)).toList());
@@ -448,8 +467,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     commentCollection.doc(comment.commentId).update(commentInfo);
   }
 
-
-    // reply
+  // reply
 
   @override
   Future<void> createReply(ReplyEntity reply) async {
@@ -477,7 +495,9 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         replyCollection.doc(reply.replyId).set(newReply).then((value) {
           final comment = firebaseFirestore
               .collection(FirebaseConsts.posts)
-              .doc(reply.postId).collection(FirebaseConsts.comments).doc(reply.commentId);
+              .doc(reply.postId)
+              .collection(FirebaseConsts.comments)
+              .doc(reply.commentId);
           comment.get().then((value) {
             if (value.exists) {
               final totalReplys = value.get("totalReplies");
@@ -505,16 +525,18 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
     try {
       replyCollection.doc(reply.replyId).delete().then((value) {
-       final comment = firebaseFirestore
-              .collection(FirebaseConsts.posts)
-              .doc(reply.postId).collection(FirebaseConsts.comments).doc(reply.commentId);
-          comment.get().then((value) {
-            if (value.exists) {
-              final totalReplys = value.get("totalReplies");
-              comment.update({"totalReplies": totalReplys - 1});
-              return;
-            }
-          });
+        final comment = firebaseFirestore
+            .collection(FirebaseConsts.posts)
+            .doc(reply.postId)
+            .collection(FirebaseConsts.comments)
+            .doc(reply.commentId);
+        comment.get().then((value) {
+          if (value.exists) {
+            final totalReplys = value.get("totalReplies");
+            comment.update({"totalReplies": totalReplys - 1});
+            return;
+          }
+        });
       });
     } catch (e) {
       print("some errors occured while deleting reply $e");

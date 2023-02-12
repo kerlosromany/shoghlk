@@ -1,26 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoghlak/domin/entities/reply/reply.dart';
 import 'package:shoghlak/domin/entities/user/user_entity.dart';
 import 'package:shoghlak/presentation/cubits/reply/reply_cubit.dart';
 import 'package:shoghlak/presentation/cubits/reply/reply_states.dart';
 import 'package:shoghlak/presentation/pages/main_screens/post/comments/widgets/single_reply_widget.dart';
-import 'package:shoghlak/presentation/widgets/circular_progress_indicator.dart';
 import 'package:shoghlak/presentation/widgets/container_widget.dart';
-import 'package:shoghlak/presentation/widgets/icon_widget.dart';
 import 'package:shoghlak/presentation/widgets/text_widget.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../../consts.dart';
 import '../../../../../../domin/entities/comment/comment_entity.dart';
+import '../../../../../../domin/use_cases/user/get_current_uid_usecase.dart';
 import '../../../../../../on_generate_route.dart';
 import '../../../../../widgets/form_container_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../../../profile/widgets/profile_widget.dart';
+import 'package:shoghlak/injection_container.dart' as di;
 
 class SingleCommentWidget extends StatefulWidget {
   final CommentEntity comment;
@@ -38,6 +36,7 @@ class SingleCommentWidget extends StatefulWidget {
 
 class _SingleCommentWidgetState extends State<SingleCommentWidget> {
   final TextEditingController _descriptionController = TextEditingController();
+  String _currentUid = "";
 
   @override
   void initState() {
@@ -46,6 +45,12 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
         reply: ReplyEntity(
             postId: widget.comment.postId,
             commentId: widget.comment.commentId));
+
+      di.sl<GetCurrentUidUseCase>().call().then((value) {
+      setState(() {
+        _currentUid = value;
+      });
+    });
     super.initState();
   }
 
@@ -53,7 +58,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onLongPress: widget.onLongPressListener,
+      onLongPress: widget.comment.creatorUid == _currentUid ? widget.onLongPressListener : null,
       child: ContainerWidget(
         margin: const EdgeInsets.symmetric(horizontal: 10),
         widget: Row(

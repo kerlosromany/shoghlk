@@ -15,6 +15,7 @@ import 'package:shoghlak/presentation/pages/main_screens/post/comments/edit_comm
 import 'package:shoghlak/presentation/pages/main_screens/post/comments/edit_reply_screen.dart';
 import 'package:shoghlak/presentation/pages/main_screens/post/update_post_screen.dart';
 import 'package:shoghlak/presentation/pages/main_screens/profile/edit_profile_screen.dart';
+import 'package:shoghlak/presentation/pages/main_screens/search/single_post_details_screen.dart';
 
 import 'injection_container.dart' as di;
 
@@ -27,6 +28,7 @@ class ScreenName {
   static const String postDetailsScreen = 'postDetailsScreen';
   static const String editCommentScreen = 'EditCommentScreen';
   static const String editReplyScreen = 'EditReplyScreen';
+  static const String singlePostDetailsScreen = 'SinglePostDetailsScreen';
 }
 
 class OnGenerateRoute {
@@ -89,6 +91,15 @@ class OnGenerateRoute {
         {
           if (args is PostEntity) {
             return routeBuilder(PostDetailsScreen(post: args));
+          } else {
+            return routeBuilder(const NoFoundScreen());
+          }
+        }
+
+      case ScreenName.singlePostDetailsScreen:
+        {
+          if (args is PostEntity) {
+            return routeBuilder(SinglePostDetailsScreen(post: args));
           } else {
             return routeBuilder(const NoFoundScreen());
           }
