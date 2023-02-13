@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:shoghlak/domin/entities/post/post_entity.dart';
 import 'package:shoghlak/domin/use_cases/user/get_current_uid_usecase.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
+import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
+import 'package:shoghlak/presentation/cubits/ui/ui_states.dart';
 import 'package:shoghlak/presentation/pages/main_screens/profile/widgets/profile_widget.dart';
 import 'package:shoghlak/presentation/widgets/icon_widget.dart';
 import 'package:shoghlak/presentation/widgets/text_widget.dart';
@@ -87,7 +89,6 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     widget.post.postImageUrl != null)
                   ContainerWidget(
                     width: double.infinity,
-                    height: 200,
                     widget: ProfileWidget(imageUrl: widget.post.postImageUrl),
                   ),
                 sizeVer(12),
@@ -126,22 +127,25 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                         GestureDetector(
                           onTap: _likePost,
                           child: IconWidget(
-                              icon: (widget.post.likes!.contains(_currentUid))
-                                  ? Icons.favorite
-                                  : Icons.favorite_outline,
-                              color: (widget.post.likes!.contains(_currentUid))
-                                  ? redColor
-                                  : primaryColor),
+                            icon: (widget.post.likes!.contains(_currentUid))
+                                ? Icons.favorite
+                                : Icons.favorite_outline,
+                            color: (widget.post.likes!.contains(_currentUid))
+                                ? redColor
+                                : primaryColor,
+                          ),
                         ),
                         sizeHor(15),
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(
-                                context, ScreenName.commentsScreen,
-                                arguments: AppEntity(
-                                  uid: _currentUid,
-                                  postId: widget.post.postId,
-                                ));
+                              context,
+                              ScreenName.commentsScreen,
+                              arguments: AppEntity(
+                                uid: _currentUid,
+                                postId: widget.post.postId,
+                              ),
+                            );
                           },
                           child: const IconWidget(
                               icon: Icons.comment_bank_outlined,
@@ -149,15 +153,24 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                         ),
                       ],
                     ),
-                    const IconWidget(
-                        icon: Icons.bookmark_border_outlined,
-                        color: primaryColor),
+                    GestureDetector(
+                      onTap: _savePost,
+                      child: IconWidget(
+                        icon: (widget.post.savedPosts!.contains(_currentUid))
+                            ? Icons.bookmark
+                            : Icons.bookmark_border_outlined,
+                        color: (widget.post.savedPosts!.contains(_currentUid))
+                            ? blueColor
+                            : primaryColor,
+                      ),
+                    ),
                   ],
                 ),
                 sizeVer(10),
                 TextWidget(
-                    txt: "${widget.post.totalLikes} Likes",
-                    color: primaryColor.withOpacity(0.8)),
+                  txt: "${widget.post.totalLikes} Likes",
+                  color: primaryColor.withOpacity(0.8),
+                ),
                 sizeVer(5),
                 GestureDetector(
                   onTap: () {
@@ -171,14 +184,17 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     );
                   },
                   child: TextWidget(
-                      txt: "view all ${widget.post.totalComments} comments",
-                      color: primaryColor.withOpacity(0.8)),
+                    txt: "view all ${widget.post.totalComments} comments",
+                    color: primaryColor.withOpacity(0.8),
+                  ),
                 ),
                 sizeVer(5),
                 TextWidget(
-                    txt: DateFormat.yMMMd()
-                        .format(widget.post.createAt!.toDate()),
-                    color: primaryColor.withOpacity(0.8)),
+                  txt: DateFormat.yMMMd().format(
+                    widget.post.createAt!.toDate(),
+                  ),
+                  color: primaryColor.withOpacity(0.8),
+                ),
               ],
             ),
           ),
@@ -262,6 +278,12 @@ class _PostCardWidgetState extends State<PostCardWidget> {
 
   _likePost() {
     BlocProvider.of<PostCubit>(context).likePost(
+      post: PostEntity(postId: widget.post.postId),
+    );
+  }
+
+  _savePost() {
+    BlocProvider.of<PostCubit>(context).savePost(
       post: PostEntity(postId: widget.post.postId),
     );
   }

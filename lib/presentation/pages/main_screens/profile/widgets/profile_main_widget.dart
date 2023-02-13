@@ -29,7 +29,7 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
     BlocProvider.of<PostCubit>(context).getPosts(post: PostEntity());
     super.initState();
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(

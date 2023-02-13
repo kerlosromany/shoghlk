@@ -16,6 +16,7 @@ class PostModel extends PostEntity {
   final String? phoneNo1;
   final String? phoneNo2;
   final String? communicationLink;
+  final List<String>? savedPosts;
 
   PostModel({
     this.postId,
@@ -32,6 +33,7 @@ class PostModel extends PostEntity {
     this.details,
     this.phoneNo1,
     this.phoneNo2,
+    this.savedPosts,
   }) : super(
           communicationLink: communicationLink,
           createAt: createAt,
@@ -47,6 +49,7 @@ class PostModel extends PostEntity {
           totalLikes: totalLikes,
           userName: userName,
           userProfileUrl: userProfileUrl,
+          savedPosts: savedPosts,
         );
 
   factory PostModel.fromSnapshot(DocumentSnapshot snap) {
@@ -54,6 +57,7 @@ class PostModel extends PostEntity {
     return PostModel(
       communicationLink: snapshot['communicationLink'],
       likes: List.from(snap.get("likes")),
+      savedPosts: List.from(snap.get("savedPosts")),
       createAt: snapshot['createAt'],
       creatorUid: snapshot['creatorUid'],
       description: snapshot['description'],
@@ -84,5 +88,6 @@ class PostModel extends PostEntity {
         "userProfileUrl": userProfileUrl,
         "communicationLink": communicationLink,
         "likes": likes,
+        "savedPosts": savedPosts,
       };
 }

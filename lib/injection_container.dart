@@ -22,6 +22,7 @@ import 'package:shoghlak/presentation/cubits/credential/credential_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/reply/reply_cubit.dart';
+import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/user_cubit.dart';
 
@@ -31,6 +32,7 @@ import 'data/repository/firebase_repository_impl.dart';
 import 'domin/repository/firebase_repository.dart';
 import 'domin/use_cases/comment/like_comment_usecase.dart';
 import 'domin/use_cases/comment/update_comment_usecase.dart';
+import 'domin/use_cases/post/save_post_usecase.dart';
 import 'domin/use_cases/user/create_user_usecase.dart';
 import 'domin/use_cases/user/get_current_uid_usecase.dart';
 import 'domin/use_cases/user/get_single_user_usecase.dart';
@@ -76,6 +78,7 @@ Future<void> init() async {
       likePostUseCase: sl.call(),
       readPostsUseCase: sl.call(),
       updatePostUseCase: sl.call(),
+      savePostUseCase: sl.call(),
     ),
   );
 
@@ -103,6 +106,11 @@ Future<void> init() async {
       updateReplyUseCase: sl.call(),
     ),
   );
+
+  //Ui cubit injection //////////////////////////todo
+  // sl.registerFactory(
+  //   () => UiCubit(),
+  // );
 
   // Use Cases
   sl.registerLazySingleton(() => SignOutUseCase(firebaseRepository: sl.call()));
@@ -139,6 +147,8 @@ Future<void> init() async {
       () => UpdatePostUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
       () => LikePostUseCase(firebaseRepository: sl.call()));
+  sl.registerLazySingleton(
+      () => SavePostUseCase(firebaseRepository: sl.call()));
 
   // comment use cases
   sl.registerLazySingleton(
@@ -161,7 +171,6 @@ Future<void> init() async {
       () => UpdateReplyUseCase(firebaseRepository: sl.call()));
   sl.registerLazySingleton(
       () => ReadReplysUseCase(firebaseRepository: sl.call()));
-
 
   // firebase repo
   sl.registerLazySingleton<FirebaseRepository>(

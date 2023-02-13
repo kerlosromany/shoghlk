@@ -6,6 +6,7 @@ import 'package:shoghlak/domin/entities/user/user_entity.dart';
 import 'package:shoghlak/presentation/cubits/reply/reply_cubit.dart';
 import 'package:shoghlak/presentation/cubits/reply/reply_states.dart';
 import 'package:shoghlak/presentation/pages/main_screens/post/comments/widgets/single_reply_widget.dart';
+import 'package:shoghlak/presentation/pages/main_screens/post/widgets/form_widget.dart';
 import 'package:shoghlak/presentation/widgets/container_widget.dart';
 import 'package:shoghlak/presentation/widgets/text_widget.dart';
 import 'package:uuid/uuid.dart';
@@ -36,6 +37,7 @@ class SingleCommentWidget extends StatefulWidget {
 
 class _SingleCommentWidgetState extends State<SingleCommentWidget> {
   final TextEditingController _descriptionController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
   String _currentUid = "";
 
   @override
@@ -46,7 +48,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
             postId: widget.comment.postId,
             commentId: widget.comment.commentId));
 
-      di.sl<GetCurrentUidUseCase>().call().then((value) {
+    di.sl<GetCurrentUidUseCase>().call().then((value) {
       setState(() {
         _currentUid = value;
       });
@@ -58,7 +60,9 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onLongPress: widget.comment.creatorUid == _currentUid ? widget.onLongPressListener : null,
+      onLongPress: widget.comment.creatorUid == _currentUid
+          ? widget.onLongPressListener
+          : null,
       child: ContainerWidget(
         margin: const EdgeInsets.symmetric(horizontal: 10),
         widget: Row(
@@ -95,45 +99,48 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                       txt: "${widget.comment.description}",
                     ),
                     sizeVer(4),
-                    Row(
-                      children: [
-                        TextWidget(
-                          txt: DateFormat.yMMMMd()
-                              .format(widget.comment.createAt!.toDate()),
-                          fontsize: 12,
-                          color: darkGreyColor,
-                        ),
-                        sizeHor(15),
-                        GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _isUserReplaying = !_isUserReplaying;
-                              });
-                            },
-                            child: const TextWidget(
-                              txt: "Replay",
-                              color: darkGreyColor,
-                              fontsize: 12,
-                            )),
-                        sizeHor(15),
-                        GestureDetector(
-                          onTap: () {
-                            widget.comment.totalReplies == 0
-                                ? toast("No Replys")
-                                : BlocProvider.of<ReplyCubit>(context)
-                                    .getReplys(
-                                        reply: ReplyEntity(
-                                            postId: widget.comment.postId,
-                                            commentId:
-                                                widget.comment.commentId));
-                          },
-                          child: const TextWidget(
-                            txt: "View Replays",
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        children: [
+                          TextWidget(
+                            txt: DateFormat.yMMMMd()
+                                .format(widget.comment.createAt!.toDate()),
                             fontsize: 12,
                             color: darkGreyColor,
                           ),
-                        ),
-                      ],
+                          sizeHor(15),
+                          GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _isUserReplaying = !_isUserReplaying;
+                                });
+                              },
+                              child: const TextWidget(
+                                txt: "Replay",
+                                color: darkGreyColor,
+                                fontsize: 12,
+                              )),
+                          sizeHor(15),
+                          GestureDetector(
+                            onTap: () {
+                              widget.comment.totalReplies == 0
+                                  ? toast("No Replys")
+                                  : BlocProvider.of<ReplyCubit>(context)
+                                      .getReplys(
+                                          reply: ReplyEntity(
+                                              postId: widget.comment.postId,
+                                              commentId:
+                                                  widget.comment.commentId));
+                            },
+                            child: const TextWidget(
+                              txt: "View Replays",
+                              fontsize: 12,
+                              color: darkGreyColor,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     BlocBuilder<ReplyCubit, ReplyStates>(
                       builder: (context, replyState) {
@@ -165,24 +172,36 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                     ),
                     _isUserReplaying == true ? sizeVer(10) : sizeVer(0),
                     _isUserReplaying == true
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              FormContainerWidget(
-                                hintText: "Post your replay...",
-                                controller: _descriptionController,
-                              ),
-                              sizeVer(10),
-                              GestureDetector(
-                                onTap: () {
-                                  _createReply();
-                                },
-                                child: const TextWidget(
-                                  txt: "Post",
-                                  color: blueColor,
+                        ? Form(
+                            key: formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                FormWidget(
+                                  title: "",
+                                  controller: _descriptionController,
+                                  maxLines: 5,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "write a reply to post it";
+                                    }
+                                    return null;
+                                  },
                                 ),
-                              )
-                            ],
+                                sizeVer(10),
+                                GestureDetector(
+                                  onTap: () {
+                                    if (formKey.currentState!.validate()) {
+                                      _createReply();
+                                    }
+                                  },
+                                  child: const TextWidget(
+                                    txt: "Post",
+                                    color: blueColor,
+                                  ),
+                                )
+                              ],
+                            ),
                           )
                         : const SizedBox(width: 0, height: 0)
                   ],
@@ -245,7 +264,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                           Navigator.pushNamed(
                                   context, ScreenName.editReplyScreen,
                                   arguments: reply)
-                              .then((value) => setState(() {})); 
+                              .then((value) => setState(() {}));
                         },
                         child: const TextWidget(
                           txt: "Update Reply",

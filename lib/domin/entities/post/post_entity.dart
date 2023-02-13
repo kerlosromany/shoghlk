@@ -16,6 +16,7 @@ class PostEntity extends Equatable {
   final String? phoneNo1;
   final String? phoneNo2;
   final String? communicationLink;
+  final List<String>? savedPosts;
 
   PostEntity({
     this.postId,
@@ -32,6 +33,7 @@ class PostEntity extends Equatable {
     this.phoneNo1,
     this.phoneNo2,
     this.communicationLink,
+    this.savedPosts,
   });
   @override
   // TODO: implement props
@@ -50,5 +52,6 @@ class PostEntity extends Equatable {
         phoneNo1,
         phoneNo2,
         communicationLink,
+        savedPosts,
       ];
 }

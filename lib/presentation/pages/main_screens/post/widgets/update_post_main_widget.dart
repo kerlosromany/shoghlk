@@ -7,7 +7,6 @@ import 'package:shoghlak/domin/entities/post/post_entity.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
 import 'package:shoghlak/presentation/pages/main_screens/post/widgets/form_widget.dart';
 
-
 import 'package:shoghlak/injection_container.dart' as di;
 
 import '../../../../../consts.dart';
@@ -137,7 +136,6 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                         children: [
                           ContainerWidget(
                             width: double.infinity,
-                            height: 240,
                             widget: ProfileWidget(
                               imageFile: _image,
                               imageUrl: widget.post.postImageUrl,

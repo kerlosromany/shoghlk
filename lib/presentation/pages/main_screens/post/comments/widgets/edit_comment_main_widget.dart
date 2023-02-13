@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoghlak/consts.dart';
 import 'package:shoghlak/domin/entities/comment/comment_entity.dart';
 import 'package:shoghlak/presentation/cubits/comment/comment_cubit.dart';
+import 'package:shoghlak/presentation/pages/main_screens/post/widgets/form_widget.dart';
 import 'package:shoghlak/presentation/pages/main_screens/profile/widgets/profile_form_widget.dart';
 import 'package:shoghlak/presentation/widgets/button_container_widget.dart';
 import 'package:shoghlak/presentation/widgets/circular_progress_indicator.dart';
@@ -41,9 +42,10 @@ class _EditCommentMainWidgetState extends State<EditCommentMainWidget> {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              ProfileFormWidget(
+              FormWidget(
                 controller: _descriptionController,
                 title: "Description",
+                maxLines: 5,
               ),
               sizeVer(30),
               _isUpdating

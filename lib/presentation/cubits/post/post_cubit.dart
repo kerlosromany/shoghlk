@@ -11,18 +11,22 @@ import 'package:shoghlak/domin/use_cases/post/read_posts_usecase.dart';
 import 'package:shoghlak/domin/use_cases/post/update_post_usecase.dart';
 import 'package:shoghlak/presentation/cubits/post/post_states.dart';
 
+import '../../../domin/use_cases/post/save_post_usecase.dart';
+
 class PostCubit extends Cubit<PostStates> {
   final CreatePostUseCase createPostUseCase;
   final UpdatePostUseCase updatePostUseCase;
   final DeletePostUseCase deletePostUseCase;
   final ReadPostsUseCase readPostsUseCase;
   final LikePostUseCase likePostUseCase;
+  final SavePostUseCase savePostUseCase;
   PostCubit({
     required this.createPostUseCase,
     required this.updatePostUseCase,
     required this.deletePostUseCase,
     required this.readPostsUseCase,
     required this.likePostUseCase,
+    required this.savePostUseCase,
   }) : super(PostInitial());
 
   Future<void> getPosts({required PostEntity post}) async {
@@ -45,6 +49,17 @@ class PostCubit extends Cubit<PostStates> {
     emit(PostLoading());
     try {
       await likePostUseCase.call(post);
+    } on SocketException catch (_) {
+      emit(PostFailure());
+    } catch (_) {
+      emit(PostFailure());
+    }
+  }
+
+  Future<void> savePost({required PostEntity post}) async {
+    emit(PostLoading());
+    try {
+      await savePostUseCase.call(post);
     } on SocketException catch (_) {
       emit(PostFailure());
     } catch (_) {

@@ -80,6 +80,10 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Future<void> likeComment(CommentEntity comment) async =>
       remoteDataSource.likeComment(comment);
+  
+  @override
+  Future<void> savePost(PostEntity post) async =>
+      remoteDataSource.savePost(post);
 
   @override
   Stream<List<CommentEntity>> readComments(String postId) =>
@@ -110,4 +114,6 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Future<void> updateReply(ReplyEntity reply) async =>
       remoteDataSource.updateReply(reply);
+      
+  
 }

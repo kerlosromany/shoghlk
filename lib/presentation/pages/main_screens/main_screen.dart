@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoghlak/consts.dart';
-import 'package:shoghlak/domin/entities/post/post_entity.dart';
-import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
+
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_states.dart';
 import 'package:shoghlak/presentation/pages/main_screens/post/add_post_screen.dart';
@@ -14,8 +12,6 @@ import 'package:shoghlak/presentation/pages/main_screens/save_posts/save_posts_s
 import 'package:shoghlak/presentation/pages/main_screens/search/search_screen.dart';
 import 'package:shoghlak/presentation/widgets/circular_progress_indicator.dart';
 import 'package:shoghlak/presentation/widgets/icon_widget.dart';
-
-import 'package:shoghlak/injection_container.dart' as di;
 
 class MainScreen extends StatefulWidget {
   final String uid;
@@ -33,6 +29,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     pageController = PageController();
     BlocProvider.of<GetSingleUserCubit>(context).getSingleUser(uid: widget.uid);
+
     super.initState();
   }
 
@@ -63,22 +60,20 @@ class _MainScreenState extends State<MainScreen> {
         if (getSingleUserState is GetSingleUserLoaded) {
           final currentUser = getSingleUserState.user;
           return Scaffold(
-            backgroundColor: backGroundColor,
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: backGroundColor,
               items: const [
                 BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.home), label: "home"),
+                    icon: IconWidget(icon: Icons.home), label: ""),
                 BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.search), label: "search"),
+                    icon: IconWidget(icon: Icons.search), label: ""),
                 BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.add_circle),
-                    label: "add post"),
+                    icon: IconWidget(icon: Icons.add_circle), label: ""),
                 BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.bookmark), label: "saved"),
+                    icon: IconWidget(icon: Icons.bookmark), label: ""),
                 BottomNavigationBarItem(
                     icon: IconWidget(icon: Icons.account_circle_outlined),
-                    label: "profile"),
+                    label: ""),
               ],
               onTap: changeScreen,
             ),
@@ -86,10 +81,10 @@ class _MainScreenState extends State<MainScreen> {
               controller: pageController,
               onPageChanged: changeCurrentScreen,
               children: [
-                HomeScreen(),
-                SearchScreen(),
+                const HomeScreen(),
+                const SearchScreen(),
                 AddPostScreen(currentUser: currentUser),
-                SavePostScreen(),
+                SavePostsScreen(currentUser: currentUser),
                 ProfileScreen(currentUser: currentUser),
               ],
             ),

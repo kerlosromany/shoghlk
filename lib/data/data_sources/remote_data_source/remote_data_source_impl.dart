@@ -226,6 +226,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       description: post.description,
       details: post.details,
       likes: const [],
+      savedPosts: const [],
       phoneNo1: post.phoneNo1,
       phoneNo2: post.phoneNo2,
       postId: post.postId,
@@ -234,6 +235,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       totalLikes: 0,
       userName: post.userName,
       userProfileUrl: post.userProfileUrl,
+      
     ).toJson();
 
     try {
@@ -297,6 +299,25 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         postCollection.doc(post.postId).update({
           "likes": FieldValue.arrayUnion([currentUid]),
           "totalLikes": totalLikes + 1,
+        });
+      }
+    }
+  }
+
+  @override
+  Future<void> savePost(PostEntity post) async {
+    final postCollection = firebaseFirestore.collection(FirebaseConsts.posts);
+    final currentUid = await getCurrentUid();
+    final postRef = await postCollection.doc(post.postId).get();
+    if (postRef.exists) {
+      List savedPosts = postRef.get("savedPosts");
+      if (savedPosts.contains(currentUid)) {
+        postCollection.doc(post.postId).update({
+          "savedPosts": FieldValue.arrayRemove([currentUid]),
+        });
+      } else {
+        postCollection.doc(post.postId).update({
+          "savedPosts": FieldValue.arrayUnion([currentUid]),
         });
       }
     }

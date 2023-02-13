@@ -7,6 +7,7 @@ import 'package:shoghlak/presentation/cubits/auth/auth_states.dart';
 import 'package:shoghlak/presentation/cubits/bloc_observer.dart';
 import 'package:shoghlak/presentation/cubits/credential/credential_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
+import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/user_cubit.dart';
 import 'package:shoghlak/presentation/pages/credentials/sign_in_page.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.sl<CredentialCubit>()),
         BlocProvider(create: (_) => di.sl<UserCubit>()),
         BlocProvider(create: (_) => di.sl<GetSingleUserCubit>()),
-        BlocProvider(create: (context) => di.sl<PostCubit>()..getPosts(post: PostEntity())),
+        BlocProvider(create: (context) => di.sl<PostCubit>()..getPosts(post: PostEntity()),),
         
       ],
       child: MaterialApp(

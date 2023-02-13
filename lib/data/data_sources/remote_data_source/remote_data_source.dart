@@ -31,6 +31,7 @@ abstract class FirebaseRemoteDataSource {
   Stream<List<PostEntity>> readPosts(PostEntity post);
   Stream<List<PostEntity>> readSinglePost(String postId);
   Future<void> likePost(PostEntity post);
+  Future<void> savePost(PostEntity post);
 
   // Comment Features
   Future<void> createComment(CommentEntity comment);

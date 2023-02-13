@@ -11,7 +11,14 @@ class TextWidget extends StatelessWidget {
   final FontWeight? fontWeight;
   final TextAlign? textAlign;
 
-  const TextWidget({super.key, this.color, this.fontsize, this.txt , this.fontWeight , this.textAlign,});
+  const TextWidget({
+    super.key,
+    this.color,
+    this.fontsize,
+    this.txt,
+    this.fontWeight,
+    this.textAlign,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +28,8 @@ class TextWidget extends StatelessWidget {
         color: color ?? primaryColor,
         fontSize: fontsize ?? 16,
         fontWeight: fontWeight ?? FontWeight.normal,
-        
       ),
       textAlign: textAlign,
-      
     );
   }
 }

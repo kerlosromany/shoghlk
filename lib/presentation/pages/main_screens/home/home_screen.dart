@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoghlak/consts.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/post_states.dart';
+import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
 import 'package:shoghlak/presentation/pages/main_screens/home/widgets/post_card_widget.dart';
 import 'package:shoghlak/presentation/widgets/circular_progress_indicator.dart';
 import 'package:shoghlak/injection_container.dart' as di;
@@ -17,6 +18,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Shoghlak"),
+        backgroundColor: backGroundColor.withOpacity(0.1),
       ),
       body: SafeArea(
         child: Stack(

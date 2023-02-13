@@ -29,7 +29,7 @@ class UploadPostMainWidget extends StatefulWidget {
   @override
   State<UploadPostMainWidget> createState() => _UploadPostMainWidgetState();
 }
- 
+
 class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
   File? _image;
   Future selectImage() async {
@@ -54,8 +54,6 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
   final TextEditingController _phoneNo2Controller = TextEditingController();
   final TextEditingController _communicationLinkController =
       TextEditingController();
-
-  
 
   bool _uploading = false;
 
@@ -142,7 +140,6 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                             children: [
                               ContainerWidget(
                                 width: double.infinity,
-                                height: 240,
                                 widget: ProfileWidget(imageFile: _image),
                               ),
                               InkWell(
@@ -244,6 +241,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
             creatorUid: widget.currentUser.uid,
             postId: const Uuid().v1(),
             likes: const [],
+            savedPosts: const [],
             totalComments: 0,
             totalLikes: 0,
             postImageUrl: image,

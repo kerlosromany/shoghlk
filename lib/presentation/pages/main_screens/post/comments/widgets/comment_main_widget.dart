@@ -9,6 +9,8 @@ import 'package:shoghlak/presentation/cubits/comment/comment_states.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_states.dart';
 import 'package:shoghlak/presentation/cubits/reply/reply_cubit.dart';
+import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
+import 'package:shoghlak/presentation/cubits/ui/ui_states.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_states.dart';
 import 'package:shoghlak/presentation/pages/main_screens/post/comments/widgets/single_comment_widget.dart';
@@ -34,17 +36,18 @@ class CommentMainWidget extends StatefulWidget {
 
 class _CommentMainWidgetState extends State<CommentMainWidget> {
   final TextEditingController _descriptionController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     BlocProvider.of<GetSingleUserCubit>(context)
         .getSingleUser(uid: widget.appEntity.uid!);
 
-    BlocProvider.of<GetSinglePostCubit>(context).getSinglePost(postId: widget.appEntity.postId!);
+    BlocProvider.of<GetSinglePostCubit>(context)
+        .getSinglePost(postId: widget.appEntity.postId!);
 
     BlocProvider.of<CommentCubit>(context)
         .getComments(postId: widget.appEntity.postId!);
-
 
     super.initState();
   }
@@ -92,7 +95,9 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                         widget: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(20),
-                                            child: ProfileWidget(imageUrl: singlePost.userProfileUrl)),
+                                            child: ProfileWidget(
+                                                imageUrl:
+                                                    singlePost.userProfileUrl)),
                                       ),
                                       sizeHor(10),
                                       TextWidget(
@@ -104,7 +109,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                   ),
                                   sizeVer(10),
                                   TextWidget(
-                                    txt: singlePost.description, 
+                                    txt: singlePost.description,
                                   ),
                                 ],
                               ),
@@ -239,41 +244,54 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
   _commentSection({required UserEntity currentUser}) {
     return ContainerWidget(
       width: double.infinity,
-      height: 55,
       color: Colors.grey[800],
       widget: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Row(
-          children: [
-            ContainerWidget(
-              width: 40,
-              height: 40,
-              widget: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: ProfileWidget(imageUrl: currentUser.profileUrl)),
-            ),
-            sizeHor(10),
-            Expanded(
-                child: TextFormField(
-              controller: _descriptionController,
-              maxLines: 5,
-              style: const TextStyle(color: primaryColor),
-              decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Post your comment...",
-                  hintStyle: TextStyle(color: secondaryColor)),
-            )),
-            GestureDetector(
-              onTap: () {
-                _createComment(currentUser: currentUser);
-              },
-              child: const TextWidget(
-                txt: "Post",
-                fontsize: 15,
-                color: blueColor,
+        child: Form(
+          key: formKey,
+          child: Row(
+            children: [
+              ContainerWidget(
+                width: 40,
+                height: 40,
+                widget: ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: ProfileWidget(imageUrl: currentUser.profileUrl)),
               ),
-            )
-          ],
+              sizeHor(10),
+              Expanded(
+                child: TextFormField(
+                  controller: _descriptionController,
+                  maxLines: 5,
+                  minLines: 1,
+                  style: const TextStyle(color: primaryColor),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Post your comment...",
+                    hintStyle: TextStyle(color: secondaryColor),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "write a comment to post it";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (formKey.currentState!.validate()) {
+                    _createComment(currentUser: currentUser);
+                  }
+                },
+                child: const TextWidget(
+                  txt: "Post",
+                  fontsize: 15,
+                  color: blueColor,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

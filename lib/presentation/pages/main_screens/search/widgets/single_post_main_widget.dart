@@ -64,169 +64,182 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
               builder: (context, getSinglePostState) {
                 if (getSinglePostState is GetSinglePostLoaded) {
                   final singlePost = getSinglePostState.post;
-                  return Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Card(
-                      elevation: 10,
-                      color: backGroundColor.withOpacity(0.2),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ContainerWidget(
-                          borderColor: backGroundColor.withOpacity(0.2),
-                          widget: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Card(
+                            elevation: 10,
+                            color: backGroundColor.withOpacity(0.2),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ContainerWidget(
+                                borderColor: backGroundColor.withOpacity(0.2),
+                                widget: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            ContainerWidget(
+                                              width: 50,
+                                              height: 50,
+                                              borderColor: backGroundColor
+                                                  .withOpacity(0.2),
+                                              widget: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                child: ProfileWidget(
+                                                    imageUrl: singlePost
+                                                        .userProfileUrl),
+                                              ),
+                                            ),
+                                            sizeHor(10),
+                                            TextWidget(
+                                              txt: "${singlePost.userName}",
+                                            ),
+                                          ],
+                                        ),
+                                        singlePost.creatorUid == _currentUid
+                                            ? GestureDetector(
+                                                onTap: () {
+                                                  _openBottomModalSheet(
+                                                      context);
+                                                },
+                                                child: const IconWidget(
+                                                    icon: Icons.more_vert,
+                                                    color: primaryColor),
+                                              )
+                                            : const TextWidget(txt: ""),
+                                      ],
+                                    ),
+                                    sizeVer(20),
+                                    if (singlePost.postImageUrl != "" &&
+                                        singlePost.postImageUrl != null)
                                       ContainerWidget(
-                                        width: 50,
+                                        width: double.infinity,
+                                        height: 200,
+                                        widget: ProfileWidget(
+                                            imageUrl: singlePost.postImageUrl),
+                                      ),
+                                    sizeVer(12),
+                                    TextWidget(
+                                        txt: "${singlePost.description}"),
+                                    sizeVer(12),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          ScreenName.postDetailsScreen,
+                                          arguments: singlePost,
+                                        );
+                                      },
+                                      child: ContainerWidget(
                                         height: 50,
+                                        width: double.infinity,
+                                        borderWidth: 2,
                                         borderColor:
-                                            backGroundColor.withOpacity(0.2),
-                                        widget: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          child: ProfileWidget(
-                                              imageUrl:
-                                                  singlePost.userProfileUrl),
+                                            secondaryColor.withOpacity(0.3),
+                                        widget: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            const TextWidget(txt: "Details"),
+                                            Row(
+                                              children: const [
+                                                IconWidget(
+                                                    icon: Icons
+                                                        .arrow_forward_ios_sharp),
+                                                IconWidget(
+                                                    icon: Icons
+                                                        .arrow_forward_ios_sharp),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      sizeHor(10),
-                                      TextWidget(
-                                        txt: "${singlePost.userName}",
-                                      ),
-                                    ],
-                                  ),
-                                  singlePost.creatorUid == _currentUid
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            _openBottomModalSheet(context);
-                                          },
-                                          child: const IconWidget(
-                                              icon: Icons.more_vert,
-                                              color: primaryColor),
-                                        )
-                                      : const TextWidget(txt: ""),
-                                ],
-                              ),
-                              sizeVer(20),
-                              if (singlePost.postImageUrl != "" &&
-                                  singlePost.postImageUrl != null)
-                                ContainerWidget(
-                                  width: double.infinity,
-                                  height: 200,
-                                  widget: ProfileWidget(
-                                      imageUrl: singlePost.postImageUrl),
-                                ),
-                              sizeVer(12),
-                              TextWidget(txt: "${singlePost.description}"),
-                              sizeVer(12),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    ScreenName.postDetailsScreen,
-                                    arguments: singlePost,
-                                  );
-                                },
-                                child: ContainerWidget(
-                                  height: 50,
-                                  width: double.infinity,
-                                  borderWidth: 2,
-                                  borderColor: secondaryColor.withOpacity(0.3),
-                                  widget: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      const TextWidget(txt: "Details"),
-                                      Row(
-                                        children: const [
-                                          IconWidget(
-                                              icon: Icons
-                                                  .arrow_forward_ios_sharp),
-                                          IconWidget(
-                                              icon: Icons
-                                                  .arrow_forward_ios_sharp),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              sizeVer(15),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: _likePost,
-                                        child: IconWidget(
-                                            icon: (singlePost.likes!
-                                                    .contains(_currentUid))
-                                                ? Icons.favorite
-                                                : Icons.favorite_outline,
-                                            color: (singlePost.likes!
-                                                    .contains(_currentUid))
-                                                ? redColor
-                                                : primaryColor),
-                                      ),
-                                      sizeHor(15),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(context,
-                                              ScreenName.commentsScreen,
-                                              arguments: AppEntity(
-                                                uid: _currentUid,
-                                                postId: singlePost.postId,
-                                              ));
-                                        },
-                                        child: const IconWidget(
-                                            icon: Icons.comment_bank_outlined,
-                                            color: primaryColor),
-                                      ),
-                                    ],
-                                  ),
-                                  const IconWidget(
-                                      icon: Icons.bookmark_border_outlined,
-                                      color: primaryColor),
-                                ],
-                              ),
-                              sizeVer(10),
-                              TextWidget(
-                                  txt: "${singlePost.totalLikes} Likes",
-                                  color: primaryColor.withOpacity(0.8)),
-                              sizeVer(5),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    ScreenName.commentsScreen,
-                                    arguments: AppEntity(
-                                      uid: _currentUid,
-                                      postId: singlePost.postId,
                                     ),
-                                  );
-                                },
-                                child: TextWidget(
-                                    txt:
-                                        "view all ${singlePost.totalComments} comments",
-                                    color: primaryColor.withOpacity(0.8)),
+                                    sizeVer(15),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: _likePost,
+                                              child: IconWidget(
+                                                  icon: (singlePost.likes!
+                                                          .contains(
+                                                              _currentUid))
+                                                      ? Icons.favorite
+                                                      : Icons.favorite_outline,
+                                                  color: (singlePost.likes!
+                                                          .contains(
+                                                              _currentUid))
+                                                      ? redColor
+                                                      : primaryColor),
+                                            ),
+                                            sizeHor(15),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.pushNamed(context,
+                                                    ScreenName.commentsScreen,
+                                                    arguments: AppEntity(
+                                                      uid: _currentUid,
+                                                      postId: singlePost.postId,
+                                                    ));
+                                              },
+                                              child: const IconWidget(
+                                                  icon: Icons
+                                                      .comment_bank_outlined,
+                                                  color: primaryColor),
+                                            ),
+                                          ],
+                                        ),
+                                        const IconWidget(
+                                            icon:
+                                                Icons.bookmark_border_outlined,
+                                            color: primaryColor),
+                                      ],
+                                    ),
+                                    sizeVer(10),
+                                    TextWidget(
+                                        txt: "${singlePost.totalLikes} Likes",
+                                        color: primaryColor.withOpacity(0.8)),
+                                    sizeVer(5),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          ScreenName.commentsScreen,
+                                          arguments: AppEntity(
+                                            uid: _currentUid,
+                                            postId: singlePost.postId,
+                                          ),
+                                        );
+                                      },
+                                      child: TextWidget(
+                                          txt:
+                                              "view all ${singlePost.totalComments} comments",
+                                          color: primaryColor.withOpacity(0.8)),
+                                    ),
+                                    sizeVer(5),
+                                    TextWidget(
+                                        txt: DateFormat.yMMMd().format(
+                                            singlePost.createAt!.toDate()),
+                                        color: primaryColor.withOpacity(0.8)),
+                                  ],
+                                ),
                               ),
-                              sizeVer(5),
-                              TextWidget(
-                                  txt: DateFormat.yMMMd()
-                                      .format(singlePost.createAt!.toDate()),
-                                  color: primaryColor.withOpacity(0.8)),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   );
                 }
