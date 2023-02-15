@@ -33,6 +33,7 @@ class _SavePostsScreenState extends State<SavePostsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         body: SafeArea(
       child: Container(
@@ -58,8 +59,8 @@ class _SavePostsScreenState extends State<SavePostsScreen> {
                     return Center(
                       child: ContainerWidget(
                         color: backGroundColor.withOpacity(0.5),
-                        padding: const EdgeInsets.all(20),
-                        borderRadius: BorderRadius.circular(20),
+                        padding:  EdgeInsets.all(0.05 * screenWidth),
+                        borderRadius: BorderRadius.circular(0.05 * screenWidth),
                         widget: const TextWidget(
                           txt: "You didn\'t save any post",
                           fontWeight: FontWeight.w900,
@@ -85,70 +86,4 @@ class _SavePostsScreenState extends State<SavePostsScreen> {
     ));
   }
 
-  _openBottomModalSheet(BuildContext context) {
-    return showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return ContainerWidget(
-          height: 150,
-          color: backGroundColor.withOpacity(.2),
-          widget: SingleChildScrollView(
-            child: ContainerWidget(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              widget: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: TextWidget(
-                      txt: "More Options",
-                      fontWeight: FontWeight.bold,
-                      fontsize: 18,
-                    ),
-                  ),
-                  sizeVer(8),
-                  const Divider(thickness: 1, color: secondaryColor),
-                  sizeVer(8),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, ScreenName.editProfileScreen,
-                            arguments: widget.currentUser);
-                      },
-                      child: const TextWidget(
-                        txt: "Edit Profile",
-                        fontWeight: FontWeight.w500,
-                        fontsize: 16,
-                      ),
-                    ),
-                  ),
-                  sizeVer(7),
-                  const Divider(thickness: 1, color: secondaryColor),
-                  sizeVer(7),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: InkWell(
-                      onTap: () {
-                        BlocProvider.of<AuthCubit>(context).logOut();
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, ScreenName.signInScreen, (route) => false);
-                      },
-                      child: const TextWidget(
-                        txt: "Logout",
-                        fontWeight: FontWeight.w500,
-                        fontsize: 16,
-                      ),
-                    ),
-                  ),
-                  sizeVer(7),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }

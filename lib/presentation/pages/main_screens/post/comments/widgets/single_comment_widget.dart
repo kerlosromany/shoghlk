@@ -15,7 +15,6 @@ import '../../../../../../consts.dart';
 import '../../../../../../domin/entities/comment/comment_entity.dart';
 import '../../../../../../domin/use_cases/user/get_current_uid_usecase.dart';
 import '../../../../../../on_generate_route.dart';
-import '../../../../../widgets/form_container_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../../../profile/widgets/profile_widget.dart';
@@ -59,28 +58,30 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
   bool _isUserReplaying = false;
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
       onLongPress: widget.comment.creatorUid == _currentUid
           ? widget.onLongPressListener
           : null,
       child: ContainerWidget(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
+        margin: EdgeInsets.symmetric(horizontal: 0.0255 * screenWidth),
         widget: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ContainerWidget(
-              width: 40,
-              height: 40,
+              width: 0.1 * screenWidth,
+              height: 0.048 * screenHeight,
               widget: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(0.1 * screenWidth),
                   child: ProfileWidget(
                     imageUrl: "${widget.comment.userProfileUrl}",
                   )),
             ),
-            sizeHor(10),
+            sizeHor(0.0255 * screenWidth),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(0.02 * screenWidth),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -100,7 +101,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                     ),
                     sizeVer(4),
                     Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
+                      padding: EdgeInsets.only(top: 0.025 * screenWidth),
                       child: Row(
                         children: [
                           TextWidget(
@@ -109,7 +110,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                             fontsize: 12,
                             color: darkGreyColor,
                           ),
-                          sizeHor(15),
+                          sizeHor(0.038 * screenWidth),
                           GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -121,7 +122,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                                 color: darkGreyColor,
                                 fontsize: 12,
                               )),
-                          sizeHor(15),
+                          sizeHor(0.038 * screenWidth),
                           GestureDetector(
                             onTap: () {
                               widget.comment.totalReplies == 0
@@ -170,7 +171,9 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                         return const ContainerWidget(width: 0, height: 0);
                       },
                     ),
-                    _isUserReplaying == true ? sizeVer(10) : sizeVer(0),
+                    _isUserReplaying == true
+                        ? sizeVer(0.0121 * screenHeight)
+                        : sizeVer(0),
                     _isUserReplaying == true
                         ? Form(
                             key: formKey,
@@ -188,7 +191,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                                     return null;
                                   },
                                 ),
-                                sizeVer(10),
+                                sizeVer(0.0121 * screenHeight),
                                 GestureDetector(
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {

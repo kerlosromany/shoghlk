@@ -37,8 +37,9 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return ContainerWidget(
-      width: 330,
+      width: 0.84 * screenWidth,
       color: backGroundColor,
       borderRadius: BorderRadius.circular(20),
       borderColor: primaryColor,

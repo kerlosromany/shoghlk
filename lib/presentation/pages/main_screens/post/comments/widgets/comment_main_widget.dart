@@ -60,6 +60,8 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     BlocProvider.of<CommentCubit>(context)
         .getComments(postId: widget.appEntity.postId!);
     return Scaffold(
@@ -83,23 +85,23 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(10),
+                              padding: EdgeInsets.all(0.025 * screenWidth),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
                                       ContainerWidget(
-                                        width: 40,
-                                        height: 40,
+                                        width: 0.1 * screenWidth,
+                                        height: 0.048 * screenHeight,
                                         widget: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                            borderRadius: BorderRadius.circular(
+                                                0.05 * screenWidth),
                                             child: ProfileWidget(
                                                 imageUrl:
                                                     singlePost.userProfileUrl)),
                                       ),
-                                      sizeHor(10),
+                                      sizeHor(0.0255 * screenWidth),
                                       TextWidget(
                                         txt: singlePost.userName,
                                         fontsize: 15,
@@ -107,16 +109,16 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                       ),
                                     ],
                                   ),
-                                  sizeVer(10),
+                                  sizeVer(0.0121 * screenHeight),
                                   TextWidget(
                                     txt: singlePost.description,
                                   ),
                                 ],
                               ),
                             ),
-                            sizeVer(10),
+                            sizeVer(0.0121 * screenHeight),
                             const Divider(color: secondaryColor),
-                            sizeVer(10),
+                            sizeVer(0.0121 * screenHeight),
                             Expanded(
                               child: ListView.builder(
                                 itemBuilder: (context, index) {
@@ -134,9 +136,11 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                       comment: singelComment,
                                       onLongPressListener: () {
                                         _openBottomModalSheet(
-                                            context: context,
-                                            comment:
-                                                commentState.comments[index]);
+                                          context: context,
+                                          comment: commentState.comments[index],
+                                          screenHeight: screenHeight,
+                                          screenWidth: screenWidth,
+                                        );
                                       },
                                       currentUser: singleUser,
                                     ),
@@ -145,7 +149,11 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                 itemCount: commentState.comments.length,
                               ),
                             ),
-                            _commentSection(currentUser: singleUser),
+                            _commentSection(
+                              currentUser: singleUser,
+                              screenHeight: screenHeight,
+                              screenWidth: screenWidth,
+                            ),
                           ],
                         );
                       }
@@ -167,41 +175,42 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
   }
 
   _openBottomModalSheet(
-      {required BuildContext context, required CommentEntity comment}) {
+      {required BuildContext context,
+      required CommentEntity comment,
+      required double screenHeight,
+      required double screenWidth}) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
-            height: 150,
+            height: 0.18 * screenHeight,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
+                margin: EdgeInsets.symmetric(vertical: 0.02 * screenWidth),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        "More Options",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: primaryColor),
+                    Padding(
+                      padding: EdgeInsets.only(left: 0.02 * screenWidth),
+                      child: const TextWidget(
+                        txt: "More Options",
+                        fontWeight: FontWeight.bold,
+                        fontsize: 18,
                       ),
                     ),
-                    sizeVer(8),
+                    sizeVer(0.0121 * screenHeight),
                     const Divider(thickness: 1, color: secondaryColor),
-                    sizeVer(8),
+                    sizeVer(0.0121 * screenHeight),
                     GestureDetector(
                       onTap: () {
                         _deleteComment(
                             commentID: comment.commentId!,
                             postID: comment.postId!);
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: TextWidget(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 0.02 * screenWidth),
+                        child: const TextWidget(
                           txt: "Delete Comment",
                           fontWeight: FontWeight.w500,
                           fontsize: 16,
@@ -210,9 +219,9 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                     ),
                     sizeVer(7),
                     const Divider(thickness: 1, color: secondaryColor),
-                    sizeVer(7),
+                    sizeVer(0.0121 * screenHeight),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
+                      padding: EdgeInsets.only(left: 0.02 * screenWidth),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(
@@ -227,7 +236,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                         ),
                       ),
                     ),
-                    sizeVer(7),
+                    sizeVer(0.0121 * screenHeight),
                   ],
                 ),
               ),
@@ -241,24 +250,27 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
         comment: CommentEntity(commentId: commentID, postId: postID));
   }
 
-  _commentSection({required UserEntity currentUser}) {
+  _commentSection(
+      {required UserEntity currentUser,
+      required double screenHeight,
+      required double screenWidth}) {
     return ContainerWidget(
       width: double.infinity,
       color: Colors.grey[800],
       widget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 0.0255 * screenWidth),
         child: Form(
           key: formKey,
           child: Row(
             children: [
               ContainerWidget(
-                width: 40,
-                height: 40,
+                width: 0.1 * screenWidth,
+                height: 0.048 * screenHeight,
                 widget: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
+                    borderRadius: BorderRadius.circular(0.1 * screenWidth),
                     child: ProfileWidget(imageUrl: currentUser.profileUrl)),
               ),
-              sizeHor(10),
+              sizeHor(0.0255 * screenWidth),
               Expanded(
                 child: TextFormField(
                   controller: _descriptionController,

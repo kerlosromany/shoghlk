@@ -21,11 +21,13 @@ class ButtonContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: onTapListener,
       child: Container(
-        width: width ?? 300,
-        height: height ?? 50,
+        width: width ?? 0.76 * screenWidth,
+        height: height ?? 0.06 * screenHeight,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [

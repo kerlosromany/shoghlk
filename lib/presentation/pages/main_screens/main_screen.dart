@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:shoghlak/presentation/pages/main_screens/save_posts/save_posts_s
 import 'package:shoghlak/presentation/pages/main_screens/search/search_screen.dart';
 import 'package:shoghlak/presentation/widgets/circular_progress_indicator.dart';
 import 'package:shoghlak/presentation/widgets/icon_widget.dart';
+import 'package:shoghlak/presentation/widgets/text_widget.dart';
 
 class MainScreen extends StatefulWidget {
   final String uid;
@@ -33,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
+  
   @override
   void dispose() {
     // TODO: implement dispose
@@ -52,46 +55,72 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetSingleUserCubit, GetSingleUserStates>(
-      builder: (context, getSingleUserState) {
-        // if(getSingleUserState is GetSingleUserLoading){
-        //   return const CircularProgressIndicatorWidget();
-        // }
-        if (getSingleUserState is GetSingleUserLoaded) {
-          final currentUser = getSingleUserState.user;
-          return Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: backGroundColor,
-              items: const [
-                BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.home), label: ""),
-                BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.search), label: ""),
-                BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.add_circle), label: ""),
-                BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.bookmark), label: ""),
-                BottomNavigationBarItem(
-                    icon: IconWidget(icon: Icons.account_circle_outlined),
-                    label: ""),
-              ],
-              onTap: changeScreen,
-            ),
-            body: PageView(
-              controller: pageController,
-              onPageChanged: changeCurrentScreen,
-              children: [
-                const HomeScreen(),
-                const SearchScreen(),
-                AddPostScreen(currentUser: currentUser),
-                SavePostsScreen(currentUser: currentUser),
-                ProfileScreen(currentUser: currentUser),
-              ],
-            ),
-          );
-        }
-        return const CircularProgressIndicatorWidget();
-      },
-    );
+        double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    
+      return StreamBuilder<ConnectivityResult>(
+        stream: Connectivity().onConnectivityChanged,
+        builder: (context, snapshot) {
+          return snapshot.data == ConnectivityResult.none
+              ? const Scaffold(
+                  backgroundColor: backGroundColor,
+                  body: Center(
+                      child: TextWidget(
+                          txt: "No internet connection", color: primaryColor)))
+              : BlocBuilder<GetSingleUserCubit, GetSingleUserStates>(
+                  builder: (context, getSingleUserState) {
+                    
+                    if (getSingleUserState is GetSingleUserLoaded) {
+                      final currentUser = getSingleUserState.user;
+                      return Scaffold(
+                        bottomNavigationBar: BottomNavigationBar(
+                          backgroundColor: backGroundColor,
+                          items: [
+                            BottomNavigationBarItem(
+                                icon: IconWidget(
+                                    icon: Icons.home,
+                                    size: _currentIndex == 0 ? 0.1 * screenWidth : 0.06 * screenWidth),
+                                label: ""),
+                            BottomNavigationBarItem(
+                                icon: IconWidget(
+                                    icon: Icons.search,
+                                    size: _currentIndex == 1 ? 0.1 * screenWidth : 0.06 * screenWidth),
+                                label: ""),
+                            BottomNavigationBarItem(
+                                icon: IconWidget(
+                                    icon: Icons.add_circle,
+                                    size: _currentIndex == 2 ? 0.1 * screenWidth : 0.06 * screenWidth),
+                                label: ""),
+                            BottomNavigationBarItem(
+                                icon: IconWidget(
+                                    icon: Icons.bookmark,
+                                    size: _currentIndex == 3 ? 0.1 * screenWidth : 0.06 * screenWidth),
+                                label: ""),
+                            BottomNavigationBarItem(
+                                icon: IconWidget(
+                                    icon: Icons.account_circle_outlined,
+                                    size: _currentIndex == 4 ? 0.1 * screenWidth : 0.06 * screenWidth),
+                                label: ""),
+                          ],
+                          onTap: changeScreen,
+                        ),
+                        body: PageView(
+                          controller: pageController,
+                          onPageChanged: changeCurrentScreen,
+                          children: [
+                            const HomeScreen(),
+                            const SearchScreen(),
+                            AddPostScreen(currentUser: currentUser),
+                            SavePostsScreen(currentUser: currentUser),
+                            ProfileScreen(currentUser: currentUser),
+                          ],
+                        ),
+                      );
+                    }
+                    return const CircularProgressIndicatorWidget();
+                  },
+                );
+        },
+      );
   }
 }

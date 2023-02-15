@@ -40,13 +40,15 @@ class _PostCardWidgetState extends State<PostCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(0.04 * screenWidth),
       child: Card(
         elevation: 10,
         color: backGroundColor.withOpacity(0.2),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(0.02 * screenWidth),
           child: ContainerWidget(
             borderColor: backGroundColor.withOpacity(0.2),
             widget: Column(
@@ -58,16 +60,17 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     Row(
                       children: [
                         ContainerWidget(
-                          width: 50,
-                          height: 50,
+                          width: 0.13 * screenWidth,
+                          height: 0.06 * screenHeight,
                           borderColor: backGroundColor.withOpacity(0.2),
                           widget: ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius:
+                                BorderRadius.circular(0.08 * screenWidth),
                             child: ProfileWidget(
                                 imageUrl: widget.post.userProfileUrl),
                           ),
                         ),
-                        sizeHor(10),
+                        sizeHor(0.026 * screenWidth),
                         TextWidget(
                           txt: "${widget.post.userName}",
                         ),
@@ -76,7 +79,8 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     widget.post.creatorUid == _currentUid
                         ? GestureDetector(
                             onTap: () {
-                              _openBottomModalSheet(context);
+                              _openBottomModalSheet(
+                                  context, screenHeight, screenWidth);
                             },
                             child: const IconWidget(
                                 icon: Icons.more_vert, color: primaryColor),
@@ -84,16 +88,16 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                         : const TextWidget(txt: ""),
                   ],
                 ),
-                sizeVer(20),
+                sizeVer(0.02 * screenHeight),
                 if (widget.post.postImageUrl != "" &&
                     widget.post.postImageUrl != null)
                   ContainerWidget(
                     width: double.infinity,
                     widget: ProfileWidget(imageUrl: widget.post.postImageUrl),
                   ),
-                sizeVer(12),
+                sizeVer(0.015 * screenHeight),
                 TextWidget(txt: "${widget.post.description}"),
-                sizeVer(12),
+                sizeVer(0.015 * screenHeight),
                 InkWell(
                   onTap: () {
                     Navigator.pushNamed(context, ScreenName.postDetailsScreen,
@@ -118,7 +122,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     ),
                   ),
                 ),
-                sizeVer(15),
+                sizeVer(0.018 * screenHeight),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -127,6 +131,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                         GestureDetector(
                           onTap: _likePost,
                           child: IconWidget(
+                            size: 35,
                             icon: (widget.post.likes!.contains(_currentUid))
                                 ? Icons.favorite
                                 : Icons.favorite_outline,
@@ -135,7 +140,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                                 : primaryColor,
                           ),
                         ),
-                        sizeHor(15),
+                        sizeHor(0.038 * screenWidth),
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(
@@ -148,6 +153,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                             );
                           },
                           child: const IconWidget(
+                              size: 35,
                               icon: Icons.comment_bank_outlined,
                               color: primaryColor),
                         ),
@@ -156,6 +162,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     GestureDetector(
                       onTap: _savePost,
                       child: IconWidget(
+                        size: 35,
                         icon: (widget.post.savedPosts!.contains(_currentUid))
                             ? Icons.bookmark
                             : Icons.bookmark_border_outlined,
@@ -166,12 +173,12 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     ),
                   ],
                 ),
-                sizeVer(10),
+                sizeVer(0.012 * screenHeight),
                 TextWidget(
                   txt: "${widget.post.totalLikes} Likes",
                   color: primaryColor.withOpacity(0.8),
                 ),
-                sizeVer(5),
+                sizeVer(0.012 * screenHeight),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
@@ -203,22 +210,23 @@ class _PostCardWidgetState extends State<PostCardWidget> {
     );
   }
 
-  _openBottomModalSheet(BuildContext context) {
+  _openBottomModalSheet(
+      BuildContext context, double screenHeight, double screenWidth) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
-            height: 150,
+            height: 0.18 * screenHeight,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
+                margin: EdgeInsets.symmetric(vertical: 0.02 * screenWidth),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Text(
+                    Padding(
+                      padding: EdgeInsets.only(left: 0.02 * screenWidth),
+                      child: const Text(
                         "More Options",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -226,25 +234,25 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                             color: primaryColor),
                       ),
                     ),
-                    sizeVer(8),
+                    sizeVer(0.0121 * screenHeight),
                     const Divider(thickness: 1, color: secondaryColor),
-                    sizeVer(8),
+                    sizeVer(0.0121 * screenHeight),
                     GestureDetector(
                       onTap: () {
                         _deletePost();
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: TextWidget(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 0.02 * screenWidth),
+                        child: const TextWidget(
                           txt: "Delete Post",
                           fontWeight: FontWeight.w500,
                           fontsize: 16,
                         ),
                       ),
                     ),
-                    sizeVer(7),
+                    sizeVer(0.0121 * screenHeight),
                     const Divider(thickness: 1, color: secondaryColor),
-                    sizeVer(7),
+                    sizeVer(0.0121 * screenHeight),
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: GestureDetector(
@@ -262,7 +270,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                         ),
                       ),
                     ),
-                    sizeVer(7),
+                    sizeVer(0.0121 * screenHeight),
                   ],
                 ),
               ),

@@ -13,14 +13,14 @@ import '../../../profile/widgets/profile_widget.dart';
 class SingleReplyWidget extends StatefulWidget {
   final ReplyEntity reply;
   final VoidCallback? onLongPressListener;
-  const SingleReplyWidget({super.key, required this.reply , this.onLongPressListener});
+  const SingleReplyWidget(
+      {super.key, required this.reply, this.onLongPressListener});
 
   @override
   State<SingleReplyWidget> createState() => _SingleReplyWidgetState();
 }
 
 class _SingleReplyWidgetState extends State<SingleReplyWidget> {
-
   String _currentUid = "";
   @override
   void initState() {
@@ -36,26 +36,31 @@ class _SingleReplyWidgetState extends State<SingleReplyWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
-      onLongPress: widget.reply.creatorUid == _currentUid ? widget.onLongPressListener : null,
+      onLongPress: widget.reply.creatorUid == _currentUid
+          ? widget.onLongPressListener
+          : null,
       child: ContainerWidget(
-        margin: const EdgeInsets.only(left: 10, top: 10),
+        margin: EdgeInsets.only(
+            left: 0.0255 * screenWidth, top: 0.0255 * screenWidth),
         widget: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ContainerWidget(
-              width: 40,
-              height: 40,
+              width: 0.1 * screenWidth,
+              height: 0.048 * screenHeight,
               widget: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(0.1 * screenWidth),
                   child: ProfileWidget(
                     imageUrl: "${widget.reply.userProfileUrl}",
                   )),
             ),
-            sizeHor(10),
+            sizeHor(0.0255 * screenWidth),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(0.0255 * screenWidth),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

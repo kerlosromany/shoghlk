@@ -15,6 +15,9 @@ class PostDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(),
       body: Stack(
@@ -29,59 +32,59 @@ class PostDetailsScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(0.02 * screenWidth),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const TextWidget(
                     txt: "Description", fontWeight: FontWeight.bold),
-                sizeVer(10),
+                sizeVer(0.01 * screenHeight),
                 ContainerWidget(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(0.02 * screenWidth),
                   borderWidth: 2,
                   borderColor: backGroundColor,
                   widget: SelectableText("${post.description}"),
                 ),
                 sizeVer(20),
                 const TextWidget(txt: "Details", fontWeight: FontWeight.bold),
-                sizeVer(10),
+                sizeVer(0.01 * screenHeight),
                 ContainerWidget(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(0.02 * screenWidth),
                   borderWidth: 2,
                   borderColor: backGroundColor,
                   widget: SelectableText("${post.details}"),
                 ),
-                sizeVer(20),
+                sizeVer(0.02 * screenHeight),
                 const TextWidget(
                     txt: "Phone number", fontWeight: FontWeight.bold),
-                sizeVer(10),
+                sizeVer(0.01 * screenHeight),
                 ContainerWidget(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(0.02 * screenWidth),
                   borderWidth: 2,
                   borderColor: backGroundColor,
                   widget: SelectableText("${post.phoneNo1}"),
                 ),
-                sizeVer(20),
+                sizeVer(0.02 * screenHeight),
                 const TextWidget(
                     txt: "Phone number", fontWeight: FontWeight.bold),
-                sizeVer(10),
+                sizeVer(0.01 * screenHeight),
                 ContainerWidget(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(0.02 * screenWidth),
                   borderWidth: 2,
                   borderColor: backGroundColor,
                   widget: SelectableText("${post.phoneNo2}"),
                 ),
-                sizeVer(20),
+                sizeVer(0.02 * screenHeight),
                 const TextWidget(
                     txt: "Communication Link", fontWeight: FontWeight.bold),
-                sizeVer(10),
+                sizeVer(0.01 * screenHeight),
                 ContainerWidget(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(0.02 * screenWidth),
                   borderWidth: 2,
                   borderColor: backGroundColor,
                   widget: SelectableText("${post.communicationLink}"),

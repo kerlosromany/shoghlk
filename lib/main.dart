@@ -7,22 +7,23 @@ import 'package:shoghlak/presentation/cubits/auth/auth_states.dart';
 import 'package:shoghlak/presentation/cubits/bloc_observer.dart';
 import 'package:shoghlak/presentation/cubits/credential/credential_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
-import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/user_cubit.dart';
 import 'package:shoghlak/presentation/pages/credentials/sign_in_page.dart';
-import 'package:shoghlak/presentation/pages/credentials/sign_up_page.dart';
 import 'package:shoghlak/presentation/pages/main_screens/main_screen.dart';
 
+import 'data/data_sources/local_data_source/cache_helper.dart';
 import 'on_generate_route.dart';
 import 'injection_container.dart' as di;
-import 'presentation/cubits/comment/comment_cubit.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   await di.init();
+  await CacheHelper.init();
+
+  
   runApp(const MyApp());
 }
 
@@ -37,8 +38,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.sl<CredentialCubit>()),
         BlocProvider(create: (_) => di.sl<UserCubit>()),
         BlocProvider(create: (_) => di.sl<GetSingleUserCubit>()),
-        BlocProvider(create: (context) => di.sl<PostCubit>()..getPosts(post: PostEntity()),),
-        
+        BlocProvider(
+          create: (context) => di.sl<PostCubit>()..getPosts(post: PostEntity()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -48,10 +50,10 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) {
-            //return SignUpPage();
             return BlocBuilder<AuthCubit, AuthStates>(
               builder: (context, authState) {
-                if (authState is Authenticated) {
+                if (authState is Authenticated &&
+                    CacheHelper.getData(key: "token") != null) {
                   return MainScreen(uid: authState.uid);
                 } else {
                   return const SignInPage();

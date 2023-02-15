@@ -80,6 +80,8 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
       body: Stack(
@@ -94,7 +96,7 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(0.02 * screenWidth),
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
@@ -103,10 +105,10 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                     ContainerWidget(
                       alignment: Alignment.center,
                       color: backGroundColor.withOpacity(0.1),
-                      height: 70,
+                      height: 0.08 * screenHeight,
                       width: double.infinity,
-                      borderRadius: const BorderRadius.vertical(
-                          bottom: Radius.circular(20)),
+                      borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(0.05 * screenWidth)),
                       widget: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -122,14 +124,14 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                                     text: "Update",
                                     color2: Colors.pinkAccent.withOpacity(0.6),
                                     color: Colors.tealAccent.withOpacity(0.6),
-                                    height: 60,
-                                    width: 80,
+                                    height: 0.07 * screenHeight,
+                                    width: 0.2 * screenWidth,
                                   ),
                                 ),
                         ],
                       ),
                     ),
-                    sizeVer(10),
+                    sizeVer(0.012 * screenHeight),
                     if (widget.post.postImageUrl != null &&
                         widget.post.postImageUrl != "")
                       Stack(
@@ -143,50 +145,52 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                           ),
                           GestureDetector(
                             onTap: selectImage,
-                            child: const Padding(
-                              padding: EdgeInsets.only(left: 8.0, top: 8.0),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 0.02 * screenWidth,
+                                  top: 0.02 * screenWidth),
                               child: ContainerWidget(
                                 alignment: Alignment.center,
-                                width: 40,
-                                height: 40,
+                                width: 0.1 * screenWidth,
+                                height: 0.048 * screenHeight,
                                 color: primaryColor,
                                 boxShape: BoxShape.circle,
-                                widget: IconWidget(
+                                widget: const IconWidget(
                                     icon: Icons.edit, color: blueColor),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    sizeVer(20),
+                    sizeVer(0.02 * screenHeight),
                     FormWidget(
                       title: "Description",
                       maxLines: 12,
                       textInputType: TextInputType.text,
                       controller: _descriptionController,
                     ),
-                    sizeVer(20),
+                    sizeVer(0.02 * screenHeight),
                     FormWidget(
                       title: "Details",
                       maxLines: 15,
                       textInputType: TextInputType.text,
                       controller: _detailsController,
                     ),
-                    sizeVer(20),
+                    sizeVer(0.02 * screenHeight),
                     FormWidget(
                       title: "Phone number",
                       maxLines: 1,
                       textInputType: TextInputType.phone,
                       controller: _phoneNo1Controller,
                     ),
-                    sizeVer(20),
+                    sizeVer(0.02 * screenHeight),
                     FormWidget(
                       title: "Another Phone number",
                       maxLines: 1,
                       textInputType: TextInputType.phone,
                       controller: _phoneNo2Controller,
                     ),
-                    sizeVer(20),
+                    sizeVer(0.02 * screenHeight),
                     FormWidget(
                       title: "Communication Links",
                       maxLines: 5,

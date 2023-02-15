@@ -8,11 +8,12 @@ class ProfileFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("$title", style: const TextStyle(color: primaryColor, fontSize: 16),),
-        sizeVer(10),
+        sizeVer(0.0121*screenHeight),
         TextFormField(
           controller: controller,
           style: const TextStyle(color: primaryColor),

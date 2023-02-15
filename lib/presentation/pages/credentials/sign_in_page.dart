@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoghlak/data/data_sources/local_data_source/cache_helper.dart';
 import 'package:shoghlak/presentation/cubits/credential/credential_cubit.dart';
 import 'package:shoghlak/presentation/pages/credentials/sign_in_page.dart';
 import 'package:shoghlak/presentation/widgets/container_widget.dart';
@@ -53,6 +54,7 @@ class _SignInPageState extends State<SignInPage> {
             return BlocBuilder<AuthCubit, AuthStates>(
               builder: (context, authState) {
                 if (authState is Authenticated) {
+                  CacheHelper.saveData(key: "token", value: authState.uid);
                   return MainScreen(uid: authState.uid);
                 } else {
                   return _buildBody();

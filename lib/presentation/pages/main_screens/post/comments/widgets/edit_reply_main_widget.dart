@@ -32,6 +32,8 @@ class _EditReplyMainWidgetState extends State<EditReplyMainWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         backgroundColor: backGroundColor,
@@ -40,19 +42,19 @@ class _EditReplyMainWidgetState extends State<EditReplyMainWidget> {
           backgroundColor: backGroundColor,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding:  EdgeInsets.all(0.03*screenWidth),
           child: Column(
             children: [
               ProfileFormWidget(
                 controller: _descriptionController,
                 title: "Description",
               ),
-              sizeVer(30),
+              sizeVer(0.036*screenHeight),
               _isUpdating
                   ? const CircularProgressIndicatorWidget()
                   : ButtonContainerWidget(
                       text: "Save changes",
-                      height: 50,
+                      height: 0.06*screenHeight,
                       width: double.infinity,
                       onTapListener: () {
                         _editReply();

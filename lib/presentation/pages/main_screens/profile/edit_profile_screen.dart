@@ -64,6 +64,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         backgroundColor: backGroundColor,
@@ -78,7 +80,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               )),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 10.0),
+              padding:  EdgeInsets.only(right: 0.0255*screenWidth),
               child: _isUpdating
                   ? const CircularProgressIndicatorWidget()
                   : InkWell(
@@ -101,16 +103,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+            padding:  EdgeInsets.symmetric(horizontal: 0.0255*screenWidth, vertical: 0.0255*screenWidth),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Center(
                     child: ContainerWidget(
-                      width: 120,
-                      height: 120,
+                      width: 0.3*screenWidth,
+                      height: 0.15 * screenHeight,
                       widget: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: BorderRadius.circular(0.13 * screenWidth),
                         child: ProfileWidget(
                           imageUrl: widget.currentUser.profileUrl,
                           imageFile: _image,
@@ -118,7 +120,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ),
                   ),
-                  sizeVer(15),
+                  sizeVer(0.018 * screenHeight),
                   Center(
                     child: InkWell(
                       onTap: selectImage,
@@ -130,15 +132,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ),
                   ),
-                  sizeVer(15),
+                  sizeVer(0.018 * screenHeight),
                   ProfileFormWidget(title: "Name", controller: _nameController),
-                  sizeVer(15),
+                  sizeVer(0.018 * screenHeight),
                   ProfileFormWidget(
                       title: "Username", controller: _userNameController),
-                  sizeVer(15),
+                  sizeVer(0.018 * screenHeight),
                   ProfileFormWidget(
                       title: "Website", controller: _websiteController),
-                  sizeVer(15),
+                  sizeVer(0.018 * screenHeight),
                   ProfileFormWidget(title: "Bio", controller: _bioController),
                 ],
               ),

@@ -52,6 +52,8 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: backGroundColor,
       appBar: AppBar(
@@ -68,12 +70,12 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(15.0),
+                          padding:  EdgeInsets.all(0.038 * screenWidth),
                           child: Card(
                             elevation: 10,
                             color: backGroundColor.withOpacity(0.2),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding:  EdgeInsets.all(0.02 * screenWidth),
                               child: ContainerWidget(
                                 borderColor: backGroundColor.withOpacity(0.2),
                                 widget: Column(
@@ -86,8 +88,8 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                         Row(
                                           children: [
                                             ContainerWidget(
-                                              width: 50,
-                                              height: 50,
+                                              width: 0.13 * screenWidth,
+                                              height: 0.06 * screenHeight,
                                               borderColor: backGroundColor
                                                   .withOpacity(0.2),
                                               widget: ClipRRect(
@@ -98,7 +100,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                                         .userProfileUrl),
                                               ),
                                             ),
-                                            sizeHor(10),
+                                            sizeHor(0.0255 * screenWidth),
                                             TextWidget(
                                               txt: "${singlePost.userName}",
                                             ),
@@ -108,7 +110,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                             ? GestureDetector(
                                                 onTap: () {
                                                   _openBottomModalSheet(
-                                                      context);
+                                                      context , screenHeight , screenWidth);
                                                 },
                                                 child: const IconWidget(
                                                     icon: Icons.more_vert,
@@ -117,7 +119,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                             : const TextWidget(txt: ""),
                                       ],
                                     ),
-                                    sizeVer(20),
+                                    sizeVer(0.024 * screenHeight),
                                     if (singlePost.postImageUrl != "" &&
                                         singlePost.postImageUrl != null)
                                       ContainerWidget(
@@ -126,10 +128,10 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                         widget: ProfileWidget(
                                             imageUrl: singlePost.postImageUrl),
                                       ),
-                                    sizeVer(12),
+                                    sizeVer(0.0145 * screenHeight),
                                     TextWidget(
                                         txt: "${singlePost.description}"),
-                                    sizeVer(12),
+                                    sizeVer(0.0145 * screenHeight),
                                     InkWell(
                                       onTap: () {
                                         Navigator.pushNamed(
@@ -139,7 +141,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                         );
                                       },
                                       child: ContainerWidget(
-                                        height: 50,
+                                        height: 0.06 * screenHeight,
                                         width: double.infinity,
                                         borderWidth: 2,
                                         borderColor:
@@ -163,7 +165,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                         ),
                                       ),
                                     ),
-                                    sizeVer(15),
+                                    sizeVer(0.018 * screenHeight),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -184,7 +186,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                                       ? redColor
                                                       : primaryColor),
                                             ),
-                                            sizeHor(15),
+                                            sizeHor(0.038 * screenWidth),
                                             InkWell(
                                               onTap: () {
                                                 Navigator.pushNamed(context,
@@ -207,11 +209,11 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                             color: primaryColor),
                                       ],
                                     ),
-                                    sizeVer(10),
+                                    sizeVer(0.012 * screenHeight),
                                     TextWidget(
                                         txt: "${singlePost.totalLikes} Likes",
                                         color: primaryColor.withOpacity(0.8)),
-                                    sizeVer(5),
+                                    sizeVer(0.012 * screenHeight),
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.pushNamed(
@@ -228,7 +230,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                               "view all ${singlePost.totalComments} comments",
                                           color: primaryColor.withOpacity(0.8)),
                                     ),
-                                    sizeVer(5),
+                                    sizeVer(0.012 * screenHeight),
                                     TextWidget(
                                         txt: DateFormat.yMMMd().format(
                                             singlePost.createAt!.toDate()),
@@ -249,32 +251,30 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
     );
   }
 
-  _openBottomModalSheet(BuildContext context) {
+  _openBottomModalSheet(BuildContext context , double screenHeight , double screenWidth) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
-            height: 150,
+            height: 0.18 * screenHeight,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
+                margin:  EdgeInsets.symmetric(vertical: 0.0255 * screenWidth),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        "More Options",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: primaryColor),
+                     Padding(
+                      padding: EdgeInsets.only(left: 0.0255 * screenWidth),
+                      child: const TextWidget(
+                        txt: "More Options",
+                        fontWeight: FontWeight.bold,
+                            fontsize: 18,
                       ),
                     ),
-                    sizeVer(8),
+                    sizeVer(0.0121 * screenHeight),
                     const Divider(thickness: 1, color: secondaryColor),
-                    sizeVer(8),
+                    sizeVer(0.0121 * screenHeight),
                     GestureDetector(
                       onTap: () {
                         _deletePost();
@@ -288,11 +288,11 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                         ),
                       ),
                     ),
-                    sizeVer(7),
+                    sizeVer(0.0121 * screenHeight),
                     const Divider(thickness: 1, color: secondaryColor),
-                    sizeVer(7),
+                    sizeVer(0.0121 * screenHeight),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
+                      padding:  EdgeInsets.only(left: 0.0255 * screenWidth),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(
@@ -310,7 +310,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                         ),
                       ),
                     ),
-                    sizeVer(7),
+                    sizeVer(0.0121 * screenHeight),
                   ],
                 ),
               ),

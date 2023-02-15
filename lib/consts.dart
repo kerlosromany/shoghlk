@@ -9,6 +9,7 @@ const darkGreyColor = Color.fromRGBO(97, 97, 97, 1);
 const tealColor = Colors.tealAccent;
 const redColor = Colors.red;
 
+
 Widget sizeVer(double height) {
   return SizedBox(
     height: height,
@@ -29,7 +30,6 @@ class FirebaseConsts {
 class FirebaseStorageConsts {
   static const String profileImages = "profileImages";
   static const String postImages = "postImages";
-
 }
 
 void toast(String msg) {

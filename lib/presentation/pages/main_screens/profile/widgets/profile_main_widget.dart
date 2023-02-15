@@ -32,6 +32,8 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
  
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         body: SafeArea(
       child: Container(
@@ -48,10 +50,10 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
               ContainerWidget(
                 alignment: Alignment.center,
                 color: backGroundColor.withOpacity(0.1),
-                height: 160,
+                height: 0.19*screenHeight,
                 width: double.infinity,
                 borderRadius:
-                    const BorderRadius.vertical(bottom: Radius.circular(20)),
+                     BorderRadius.vertical(bottom: Radius.circular(0.05 * screenWidth)),
                 widget: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,13 +65,13 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             ContainerWidget(
-                              width: 60,
-                              height: 60,
+                              width: 0.15 * screenWidth,
+                              height: 0.07*screenHeight,
                               color: secondaryColor,
                               boxShape: BoxShape.circle,
                               widget: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(40)),
+                                  borderRadius:  BorderRadius.all(
+                                      Radius.circular(0.1*screenWidth)),
                                   child: ProfileWidget(
                                       imageUrl: widget.currentUser.profileUrl)),
                             ),
@@ -87,21 +89,21 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                           textAlign: TextAlign.center,
                         ),
                         ContainerWidget(
-                          width: 40,
-                          height: 40,
+                          width: 0.1 * screenWidth,
+                          height: 0.048*screenHeight,
                           borderWidth: 1,
                           borderColor: backGroundColor,
-                          borderRadius: BorderRadius.circular(40),
+                          borderRadius: BorderRadius.circular(0.1 * screenWidth),
                           color: backGroundColor.withOpacity(0.1),
                           widget: const Icon(Icons.menu, color: primaryColor),
                           onTapListener: () {
-                            _openBottomModalSheet(context);
+                            _openBottomModalSheet(context , screenHeight , screenWidth);
                           },
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 25.0),
+                      padding:  EdgeInsets.only(left: 0.06*screenWidth),
                       child: TextWidget(
                         txt: "${widget.currentUser.bio}",
                       ),
@@ -109,8 +111,8 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                   ],
                 ),
               ),
-              sizeVer(20),
-              sizeVer(20),
+              sizeVer(0.024*screenHeight),
+              sizeVer(0.024*screenHeight),
               BlocBuilder<PostCubit, PostStates>(
                 builder: (context, postState) {
                   if (postState is PostLoaded) {
@@ -123,8 +125,8 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                       return Center(
                         child: ContainerWidget(
                           color: backGroundColor.withOpacity(0.5),
-                          padding: const EdgeInsets.all(20),
-                          borderRadius: BorderRadius.circular(20),
+                          padding:  EdgeInsets.all(0.05*screenWidth),
+                          borderRadius: BorderRadius.circular(0.05*screenWidth),
                           widget: const TextWidget(
                             txt: "You didn\'t upload any post",
                             fontWeight: FontWeight.w900,
@@ -154,17 +156,17 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                           child: (posts[index].postImageUrl != "" &&
                                   posts[index].postImageUrl != null)
                               ? ContainerWidget(
-                                  width: 100,
-                                  height: 100,
+                                  width: 0.255*screenWidth,
+                                  height: 0.121*screenHeight,
                                   widget: ProfileWidget(
                                       imageUrl: posts[index].postImageUrl),
                                 )
                               : ContainerWidget(
-                                  width: 100,
-                                  height: 100,
+                                  width: 0.255*screenWidth,
+                                  height: 0.121*screenHeight,
                                   color: darkGreyColor,
                                   padding:
-                                      const EdgeInsets.only(left: 8, top: 8),
+                                       EdgeInsets.only(left: 0.02 * screenWidth, top: 0.02 * screenWidth),
                                   widget: TextWidget(
                                     txt: posts[index].description,
                                   ),
@@ -183,32 +185,32 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
     ));
   }
 
-  _openBottomModalSheet(BuildContext context) {
+  _openBottomModalSheet(BuildContext context , double screenHeight , double screenWidth) {
     return showModalBottomSheet(
       context: context,
       builder: (context) {
         return ContainerWidget(
-          height: 150,
+          height: 0.18 * screenHeight,
           color: backGroundColor.withOpacity(.2),
           widget: SingleChildScrollView(
             child: ContainerWidget(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding:  EdgeInsets.symmetric(vertical: 0.0255 * screenWidth),
               widget: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: TextWidget(
+                   Padding(
+                    padding: EdgeInsets.only(left: 0.0255 * screenWidth),
+                    child: const TextWidget(
                       txt: "More Options",
                       fontWeight: FontWeight.bold,
                       fontsize: 18,
                     ),
                   ),
-                  sizeVer(8),
+                  sizeVer(0.0121 * screenHeight),
                   const Divider(thickness: 1, color: secondaryColor),
-                  sizeVer(8),
+                  sizeVer(0.0121 * screenHeight),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                    padding:  EdgeInsets.only(left: 0.0255 * screenWidth),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(
@@ -222,11 +224,11 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                       ),
                     ),
                   ),
-                  sizeVer(7),
+                  sizeVer(0.0121 * screenHeight),
                   const Divider(thickness: 1, color: secondaryColor),
-                  sizeVer(7),
+                  sizeVer(0.0121 * screenHeight),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                    padding:  EdgeInsets.only(left: 0.0255 * screenWidth),
                     child: InkWell(
                       onTap: () {
                         BlocProvider.of<AuthCubit>(context).logOut();
@@ -240,7 +242,7 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                       ),
                     ),
                   ),
-                  sizeVer(7),
+                  sizeVer(0.0121 * screenHeight),
                 ],
               ),
             ),

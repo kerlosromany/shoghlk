@@ -72,6 +72,8 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -85,7 +87,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
           ),
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:  EdgeInsets.all(0.02 * screenWidth),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -93,10 +95,10 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                     ContainerWidget(
                       alignment: Alignment.center,
                       color: backGroundColor.withOpacity(0.1),
-                      height: 70,
+                      height: 0.08 * screenHeight,
                       width: double.infinity,
-                      borderRadius: const BorderRadius.vertical(
-                          bottom: Radius.circular(20)),
+                      borderRadius:  BorderRadius.vertical(
+                          bottom: Radius.circular(0.05 * screenWidth)),
                       widget: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -116,20 +118,20 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                                     text: "Upload",
                                     color2: Colors.pinkAccent.withOpacity(0.6),
                                     color: Colors.tealAccent.withOpacity(0.6),
-                                    height: 60,
-                                    width: 80,
+                                    height: 0.07 * screenHeight,
+                                    width: 0.2 * screenWidth,
                                   ),
                                 ),
                         ],
                       ),
                     ),
-                    sizeVer(20),
+                    sizeVer(0.024 * screenHeight),
                     _image == null
                         ? InkWell(
                             onTap: selectImage,
                             child: ContainerWidget(
                               width: double.infinity,
-                              height: 70,
+                              height: 0.08 * screenHeight,
                               alignment: Alignment.center,
                               borderRadius: BorderRadius.circular(10),
                               borderWidth: 2,
@@ -148,22 +150,22 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                                     _image = null;
                                   });
                                 },
-                                child: const Padding(
-                                  padding: EdgeInsets.only(left: 8.0, top: 8.0),
+                                child:  Padding(
+                                  padding: EdgeInsets.only(left: 0.02 * screenWidth, top: 0.02 * screenWidth),
                                   child: ContainerWidget(
                                     alignment: Alignment.center,
-                                    width: 40,
-                                    height: 40,
+                                    width: 0.1 * screenWidth,
+                                    height: 0.048 * screenHeight,
                                     color: backGroundColor,
                                     boxShape: BoxShape.circle,
-                                    widget: IconWidget(
+                                    widget: const IconWidget(
                                         icon: Icons.close, color: primaryColor),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                    sizeVer(30),
+                    sizeVer(0.036 * screenHeight),
                     FormWidget(
                       title: "Description",
                       maxLines: 12,
@@ -175,28 +177,28 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                         }
                       },
                     ),
-                    sizeVer(20),
+                    sizeVer(0.036 * screenHeight),
                     FormWidget(
                       title: "Details",
                       maxLines: 15,
                       textInputType: TextInputType.text,
                       controller: _detailsController,
                     ),
-                    sizeVer(20),
+                    sizeVer(0.036 * screenHeight),
                     FormWidget(
                       title: "Phone number",
                       maxLines: 1,
                       textInputType: TextInputType.phone,
                       controller: _phoneNo1Controller,
                     ),
-                    sizeVer(20),
+                    sizeVer(0.036 * screenHeight),
                     FormWidget(
                       title: "Another Phone number",
                       maxLines: 1,
                       textInputType: TextInputType.phone,
                       controller: _phoneNo2Controller,
                     ),
-                    sizeVer(20),
+                    sizeVer(0.036 * screenHeight),
                     FormWidget(
                       title: "Communication Links",
                       maxLines: 5,

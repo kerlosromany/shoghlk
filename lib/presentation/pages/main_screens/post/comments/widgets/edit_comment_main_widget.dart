@@ -31,6 +31,7 @@ class _EditCommentMainWidgetState extends State<EditCommentMainWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         backgroundColor: backGroundColor,
@@ -47,12 +48,12 @@ class _EditCommentMainWidgetState extends State<EditCommentMainWidget> {
                 title: "Description",
                 maxLines: 5,
               ),
-              sizeVer(30),
+              sizeVer(0.036 * screenHeight),
               _isUpdating
                   ? const CircularProgressIndicatorWidget()
                   : ButtonContainerWidget(
                       text: "Save changes",
-                      height: 50,
+                      height: 0.06 * screenHeight,
                       width: double.infinity,
                       onTapListener: () {
                         _editComment();
