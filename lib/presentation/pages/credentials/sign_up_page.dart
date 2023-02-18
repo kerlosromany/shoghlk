@@ -16,6 +16,7 @@ import 'package:shoghlak/presentation/widgets/icon_widget.dart';
 import 'package:shoghlak/presentation/widgets/text_widget.dart';
 
 import '../../../consts.dart';
+import '../../../data/data_sources/local_data_source/cache_helper.dart';
 import '../../../on_generate_route.dart';
 import '../../widgets/button_container_widget.dart';
 import '../../widgets/circular_progress_indicator.dart';
@@ -69,6 +70,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: BlocConsumer<CredentialCubit, CredentialStates>(
         listener: (context, credentialState) {
@@ -84,14 +87,17 @@ class _SignUpPageState extends State<SignUpPage> {
             return BlocBuilder<AuthCubit, AuthStates>(
               builder: (context, authState) {
                 if (authState is Authenticated) {
+                  CacheHelper.saveData(key: "token", value: authState.uid);
                   return MainScreen(uid: authState.uid);
                 } else {
-                  return _buildBody();
+                  return _buildBody(
+                      screenHeight: screenHeight, screenWidth: screenWidth);
                 }
               },
             );
           }
-          return _buildBody();
+          return _buildBody(
+              screenHeight: screenHeight, screenWidth: screenWidth);
         },
       ),
     );
@@ -125,22 +131,22 @@ class _SignUpPageState extends State<SignUpPage> {
 
   _clear() {
     setState(() {
-      _bioController.clear();
-      _confirmPasswordController.clear();
-      _emailController.clear();
-      _passwordController.clear();
-      _userNameController.clear();
+      // _bioController.clear();
+      // _confirmPasswordController.clear();
+      // _emailController.clear();
+      // _passwordController.clear();
+      // _userNameController.clear();
       _isSigningUp = false;
     });
   }
 
-  _buildBody() {
+  _buildBody({required double screenHeight, required double screenWidth}) {
     return SafeArea(
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 15),
+            padding: EdgeInsets.only(top: 0.038 * screenWidth),
             alignment: Alignment.topCenter,
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -155,11 +161,10 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           SingleChildScrollView(
-            // to delete or not
             child: ContainerWidget(
               alignment: Alignment.center,
               width: double.infinity,
-              height: 600,
+              height: 0.72 * screenHeight,
               color: backGroundColor.withOpacity(0.3),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(15),
@@ -170,22 +175,22 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const ContainerWidget(
+                      ContainerWidget(
                         alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(left: 35),
-                        widget: TextWidget(
+                        padding: EdgeInsets.only(left: 0.089 * screenWidth),
+                        widget: const TextWidget(
                           txt: "Sign up",
                           fontsize: 40,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      sizeVer(30),
+                      sizeVer(0.036 * screenHeight),
                       Center(
                         child: Stack(
                           children: [
                             ContainerWidget(
-                              width: 70,
-                              height: 70,
+                              width: 0.178 * screenWidth,
+                              height: 0.0848 * screenHeight,
                               borderRadius: BorderRadius.circular(30),
                               widget: ClipRRect(
                                   borderRadius: BorderRadius.circular(40),
@@ -205,7 +210,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ],
                         ),
                       ),
-                      sizeVer(30),
+                      sizeVer(0.036 * screenHeight),
                       FormContainerWidget(
                         controller: _userNameController,
                         hintText: "User name",
@@ -216,7 +221,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           return null;
                         },
                       ),
-                      sizeVer(15),
+                      sizeVer(0.018 * screenHeight),
                       FormContainerWidget(
                         controller: _emailController,
                         hintText: "Email",
@@ -230,7 +235,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           return null;
                         },
                       ),
-                      sizeVer(15),
+                      sizeVer(0.036 * screenHeight),
                       FormContainerWidget(
                         controller: _passwordController,
                         hintText: "Password",
@@ -245,24 +250,24 @@ class _SignUpPageState extends State<SignUpPage> {
                           return null;
                         },
                       ),
-                      sizeVer(15),
+                      sizeVer(0.036 * screenHeight),
                       FormContainerWidget(
                         controller: _confirmPasswordController,
                         hintText: "Confirm Password",
                         isPasswordField: true,
                         validator: (value) {
                           if (value != _passwordController.text) {
-                            return "Confirm Password doesn'\t match password";
+                            return "Confirm Password doesn\'t match password";
                           }
                           return null;
                         },
                       ),
-                      sizeVer(15),
+                      sizeVer(0.036 * screenHeight),
                       FormContainerWidget(
                         controller: _bioController,
                         hintText: "Bio",
                       ),
-                      sizeVer(5),
+                      sizeVer(0.036 * screenHeight),
                       const ContainerWidget(
                         alignment: Alignment.centerLeft,
                         padding: EdgeInsets.only(left: 35),
@@ -273,7 +278,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      sizeVer(15),
+                      sizeVer(0.036 * screenHeight),
                       ButtonContainerWidget(
                         color: blueColor,
                         text: "Sign Up",
@@ -283,7 +288,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           }
                         },
                       ),
-                      sizeVer(15),
+                      sizeVer(0.036 * screenHeight),
                       _isSigningUp == true
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -294,29 +299,32 @@ class _SignUpPageState extends State<SignUpPage> {
                               ],
                             )
                           : const ContainerWidget(width: 0, height: 0),
-                      sizeVer(15),
+                      sizeVer(0.036 * screenHeight),
                       const Divider(color: secondaryColor),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const TextWidget(
-                            txt: "Already have an account? ",
-                            color: darkGreyColor,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  ScreenName.signInScreen, (route) => false);
-                            },
-                            child: const TextWidget(
-                              txt: "Sign In",
-                              fontsize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: tealColor,
+                      FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const TextWidget(
+                              txt: "Already have an account? ",
+                              color: darkGreyColor,
                             ),
-                          ),
-                        ],
-                      )
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamedAndRemoveUntil(context,
+                                    ScreenName.signInScreen, (route) => false);
+                              },
+                              child: const TextWidget(
+                                txt: "Sign In",
+                                fontsize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: tealColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      sizeVer(0.018 * screenHeight),
                     ],
                   ),
                 ),

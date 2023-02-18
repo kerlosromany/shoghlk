@@ -35,7 +35,6 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
-  
   @override
   void dispose() {
     // TODO: implement dispose
@@ -55,72 +54,87 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-        double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    
-      return StreamBuilder<ConnectivityResult>(
-        stream: Connectivity().onConnectivityChanged,
-        builder: (context, snapshot) {
-          return snapshot.data == ConnectivityResult.none
-              ? const Scaffold(
-                  backgroundColor: backGroundColor,
-                  body: Center(
-                      child: TextWidget(
-                          txt: "No internet connection", color: primaryColor)))
-              : BlocBuilder<GetSingleUserCubit, GetSingleUserStates>(
-                  builder: (context, getSingleUserState) {
-                    
-                    if (getSingleUserState is GetSingleUserLoaded) {
-                      final currentUser = getSingleUserState.user;
-                      return Scaffold(
-                        bottomNavigationBar: BottomNavigationBar(
-                          backgroundColor: backGroundColor,
-                          items: [
-                            BottomNavigationBarItem(
-                                icon: IconWidget(
-                                    icon: Icons.home,
-                                    size: _currentIndex == 0 ? 0.1 * screenWidth : 0.06 * screenWidth),
-                                label: ""),
-                            BottomNavigationBarItem(
-                                icon: IconWidget(
-                                    icon: Icons.search,
-                                    size: _currentIndex == 1 ? 0.1 * screenWidth : 0.06 * screenWidth),
-                                label: ""),
-                            BottomNavigationBarItem(
-                                icon: IconWidget(
-                                    icon: Icons.add_circle,
-                                    size: _currentIndex == 2 ? 0.1 * screenWidth : 0.06 * screenWidth),
-                                label: ""),
-                            BottomNavigationBarItem(
-                                icon: IconWidget(
-                                    icon: Icons.bookmark,
-                                    size: _currentIndex == 3 ? 0.1 * screenWidth : 0.06 * screenWidth),
-                                label: ""),
-                            BottomNavigationBarItem(
-                                icon: IconWidget(
-                                    icon: Icons.account_circle_outlined,
-                                    size: _currentIndex == 4 ? 0.1 * screenWidth : 0.06 * screenWidth),
-                                label: ""),
-                          ],
-                          onTap: changeScreen,
-                        ),
-                        body: PageView(
-                          controller: pageController,
-                          onPageChanged: changeCurrentScreen,
-                          children: [
-                            const HomeScreen(),
-                            const SearchScreen(),
-                            AddPostScreen(currentUser: currentUser),
-                            SavePostsScreen(currentUser: currentUser),
-                            ProfileScreen(currentUser: currentUser),
-                          ],
-                        ),
-                      );
-                    }
-                    return const CircularProgressIndicatorWidget();
-                  },
-                );
-        },
-      );
+
+    return StreamBuilder<ConnectivityResult>(
+      stream: Connectivity().onConnectivityChanged,
+      builder: (context, snapshot) {
+        return snapshot.data == ConnectivityResult.none
+            ? const Scaffold(
+                backgroundColor: backGroundColor,
+                body: Center(
+                    child: FittedBox(
+                  child: TextWidget(
+                      txt: "No internet connection", color: primaryColor),
+                )))
+            : BlocBuilder<GetSingleUserCubit, GetSingleUserStates>(
+                builder: (context, getSingleUserState) {
+                  if (getSingleUserState is GetSingleUserLoaded) {
+                    final currentUser = getSingleUserState.user;
+                    return Scaffold(
+                      bottomNavigationBar: BottomNavigationBar(
+                        backgroundColor: backGroundColor,
+                        items: [
+                          BottomNavigationBarItem(
+                              backgroundColor: backGroundColor,
+                              icon: IconWidget(
+                                  icon: Icons.home,
+                                  size: _currentIndex == 0
+                                      ? 0.1 * screenWidth
+                                      : 0.06 * screenWidth),
+                              label: ""),
+                          BottomNavigationBarItem(
+                              backgroundColor: backGroundColor,
+                              icon: IconWidget(
+                                  icon: Icons.search,
+                                  size: _currentIndex == 1
+                                      ? 0.1 * screenWidth
+                                      : 0.06 * screenWidth),
+                              label: ""),
+                          BottomNavigationBarItem(
+                              backgroundColor: backGroundColor,
+                              icon: IconWidget(
+                                  icon: Icons.add_circle,
+                                  size: _currentIndex == 2
+                                      ? 0.1 * screenWidth
+                                      : 0.06 * screenWidth),
+                              label: ""),
+                          BottomNavigationBarItem(
+                              backgroundColor: backGroundColor,
+                              icon: IconWidget(
+                                  icon: Icons.bookmark,
+                                  size: _currentIndex == 3
+                                      ? 0.1 * screenWidth
+                                      : 0.06 * screenWidth),
+                              label: ""),
+                          BottomNavigationBarItem(
+                              backgroundColor: backGroundColor,
+                              icon: IconWidget(
+                                  icon: Icons.account_circle_outlined,
+                                  size: _currentIndex == 4
+                                      ? 0.1 * screenWidth
+                                      : 0.06 * screenWidth),
+                              label: ""),
+                        ],
+                        onTap: changeScreen,
+                      ),
+                      body: PageView(
+                        controller: pageController,
+                        onPageChanged: changeCurrentScreen,
+                        children: [
+                          const HomeScreen(),
+                          const SearchScreen(),
+                          AddPostScreen(currentUser: currentUser),
+                          SavePostsScreen(currentUser: currentUser),
+                          ProfileScreen(currentUser: currentUser),
+                        ],
+                      ),
+                    );
+                  }
+                  return const CircularProgressIndicatorWidget();
+                },
+              );
+      },
+    );
   }
 }

@@ -87,7 +87,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
           ),
           child: SingleChildScrollView(
             child: Padding(
-              padding:  EdgeInsets.all(0.02 * screenWidth),
+              padding: EdgeInsets.all(0.02 * screenWidth),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -97,7 +97,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                       color: backGroundColor.withOpacity(0.1),
                       height: 0.08 * screenHeight,
                       width: double.infinity,
-                      borderRadius:  BorderRadius.vertical(
+                      borderRadius: BorderRadius.vertical(
                           bottom: Radius.circular(0.05 * screenWidth)),
                       widget: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -150,8 +150,10 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                                     _image = null;
                                   });
                                 },
-                                child:  Padding(
-                                  padding: EdgeInsets.only(left: 0.02 * screenWidth, top: 0.02 * screenWidth),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 0.02 * screenWidth,
+                                      top: 0.02 * screenWidth),
                                   child: ContainerWidget(
                                     alignment: Alignment.center,
                                     width: 0.1 * screenWidth,

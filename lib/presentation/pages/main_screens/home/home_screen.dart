@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text("Shoghlak"),
@@ -56,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                       final post = postState.posts[index];
                       return BlocProvider<PostCubit>(
                           create: (context) => di.sl<PostCubit>(),
-                          child: PostCardWidget(post: post));
+                          child: PostCardWidget(post: post ));
                     },
                     itemCount: postState.posts.length,
                   );

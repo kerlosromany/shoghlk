@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoghlak/data/data_sources/local_data_source/cache_helper.dart';
 import 'package:shoghlak/domin/entities/user/user_entity.dart';
 import 'package:shoghlak/on_generate_route.dart';
 import 'package:shoghlak/presentation/cubits/auth/auth_cubit.dart';
@@ -29,7 +30,7 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
     BlocProvider.of<PostCubit>(context).getPosts(post: PostEntity());
     super.initState();
   }
- 
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -50,10 +51,10 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
               ContainerWidget(
                 alignment: Alignment.center,
                 color: backGroundColor.withOpacity(0.1),
-                height: 0.19*screenHeight,
+                height: 0.19 * screenHeight,
                 width: double.infinity,
-                borderRadius:
-                     BorderRadius.vertical(bottom: Radius.circular(0.05 * screenWidth)),
+                borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(0.05 * screenWidth)),
                 widget: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,12 +67,12 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                           children: [
                             ContainerWidget(
                               width: 0.15 * screenWidth,
-                              height: 0.07*screenHeight,
+                              height: 0.07 * screenHeight,
                               color: secondaryColor,
                               boxShape: BoxShape.circle,
                               widget: ClipRRect(
-                                  borderRadius:  BorderRadius.all(
-                                      Radius.circular(0.1*screenWidth)),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(0.1 * screenWidth)),
                                   child: ProfileWidget(
                                       imageUrl: widget.currentUser.profileUrl)),
                             ),
@@ -82,28 +83,32 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                             ),
                           ],
                         ),
-                        const TextWidget(
-                          txt: "My Profile",
-                          fontWeight: FontWeight.bold,
-                          fontsize: 30,
-                          textAlign: TextAlign.center,
+                        const FittedBox(
+                          child: TextWidget(
+                            txt: "My Profile",
+                            fontWeight: FontWeight.bold,
+                            // fontsize: 30,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                         ContainerWidget(
                           width: 0.1 * screenWidth,
-                          height: 0.048*screenHeight,
+                          height: 0.048 * screenHeight,
                           borderWidth: 1,
                           borderColor: backGroundColor,
-                          borderRadius: BorderRadius.circular(0.1 * screenWidth),
+                          borderRadius:
+                              BorderRadius.circular(0.1 * screenWidth),
                           color: backGroundColor.withOpacity(0.1),
                           widget: const Icon(Icons.menu, color: primaryColor),
                           onTapListener: () {
-                            _openBottomModalSheet(context , screenHeight , screenWidth);
+                            _openBottomModalSheet(
+                                context, screenHeight, screenWidth);
                           },
                         ),
                       ],
                     ),
                     Padding(
-                      padding:  EdgeInsets.only(left: 0.06*screenWidth),
+                      padding: EdgeInsets.only(left: 0.06 * screenWidth),
                       child: TextWidget(
                         txt: "${widget.currentUser.bio}",
                       ),
@@ -111,8 +116,8 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                   ],
                 ),
               ),
-              sizeVer(0.024*screenHeight),
-              sizeVer(0.024*screenHeight),
+              sizeVer(0.024 * screenHeight),
+              sizeVer(0.024 * screenHeight),
               BlocBuilder<PostCubit, PostStates>(
                 builder: (context, postState) {
                   if (postState is PostLoaded) {
@@ -125,11 +130,14 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                       return Center(
                         child: ContainerWidget(
                           color: backGroundColor.withOpacity(0.5),
-                          padding:  EdgeInsets.all(0.05*screenWidth),
-                          borderRadius: BorderRadius.circular(0.05*screenWidth),
-                          widget: const TextWidget(
-                            txt: "You didn\'t upload any post",
-                            fontWeight: FontWeight.w900,
+                          padding: EdgeInsets.all(0.05 * screenWidth),
+                          borderRadius:
+                              BorderRadius.circular(0.05 * screenWidth),
+                          widget: const FittedBox(
+                            child: TextWidget(
+                              txt: "You didn\'t upload any post",
+                              fontWeight: FontWeight.w900,
+                            ),
                           ),
                         ),
                       );
@@ -156,17 +164,18 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                           child: (posts[index].postImageUrl != "" &&
                                   posts[index].postImageUrl != null)
                               ? ContainerWidget(
-                                  width: 0.255*screenWidth,
-                                  height: 0.121*screenHeight,
+                                  width: 0.255 * screenWidth,
+                                  height: 0.121 * screenHeight,
                                   widget: ProfileWidget(
                                       imageUrl: posts[index].postImageUrl),
                                 )
                               : ContainerWidget(
-                                  width: 0.255*screenWidth,
-                                  height: 0.121*screenHeight,
+                                  width: 0.255 * screenWidth,
+                                  height: 0.121 * screenHeight,
                                   color: darkGreyColor,
-                                  padding:
-                                       EdgeInsets.only(left: 0.02 * screenWidth, top: 0.02 * screenWidth),
+                                  padding: EdgeInsets.only(
+                                      left: 0.02 * screenWidth,
+                                      top: 0.02 * screenWidth),
                                   widget: TextWidget(
                                     txt: posts[index].description,
                                   ),
@@ -185,20 +194,21 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
     ));
   }
 
-  _openBottomModalSheet(BuildContext context , double screenHeight , double screenWidth) {
+  _openBottomModalSheet(
+      BuildContext context, double screenHeight, double screenWidth) {
     return showModalBottomSheet(
       context: context,
       builder: (context) {
         return ContainerWidget(
-          height: 0.18 * screenHeight,
+      //    height: 0.18 * screenHeight,
           color: backGroundColor.withOpacity(.2),
           widget: SingleChildScrollView(
             child: ContainerWidget(
-              padding:  EdgeInsets.symmetric(vertical: 0.0255 * screenWidth),
+              padding: EdgeInsets.symmetric(vertical: 0.0255 * screenWidth),
               widget: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 0.0255 * screenWidth),
                     child: const TextWidget(
                       txt: "More Options",
@@ -210,7 +220,7 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                   const Divider(thickness: 1, color: secondaryColor),
                   sizeVer(0.0121 * screenHeight),
                   Padding(
-                    padding:  EdgeInsets.only(left: 0.0255 * screenWidth),
+                    padding: EdgeInsets.only(left: 0.0255 * screenWidth),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(
@@ -228,10 +238,14 @@ class _ProfileMainWidgetState extends State<ProfileMainWidget> {
                   const Divider(thickness: 1, color: secondaryColor),
                   sizeVer(0.0121 * screenHeight),
                   Padding(
-                    padding:  EdgeInsets.only(left: 0.0255 * screenWidth),
+                    padding: EdgeInsets.only(left: 0.0255 * screenWidth),
                     child: InkWell(
                       onTap: () {
-                        BlocProvider.of<AuthCubit>(context).logOut();
+                        BlocProvider.of<AuthCubit>(context)
+                            .logOut()
+                            .then((value) {
+                          CacheHelper.removeData(key: "token");
+                        });
                         Navigator.pushNamedAndRemoveUntil(
                             context, ScreenName.signInScreen, (route) => false);
                       },

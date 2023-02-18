@@ -9,8 +9,6 @@ import 'package:shoghlak/presentation/cubits/comment/comment_states.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_states.dart';
 import 'package:shoghlak/presentation/cubits/reply/reply_cubit.dart';
-import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
-import 'package:shoghlak/presentation/cubits/ui/ui_states.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_states.dart';
 import 'package:shoghlak/presentation/pages/main_screens/post/comments/widgets/single_comment_widget.dart';
@@ -62,8 +60,8 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    BlocProvider.of<CommentCubit>(context)
-        .getComments(postId: widget.appEntity.postId!);
+    // BlocProvider.of<CommentCubit>(context)
+    //     .getComments(postId: widget.appEntity.postId!);
     return Scaffold(
       backgroundColor: backGroundColor,
       appBar: AppBar(
@@ -183,7 +181,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
         context: context,
         builder: (context) {
           return Container(
-            height: 0.18 * screenHeight,
+          //  height: 0.18 * screenHeight,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(

@@ -52,6 +52,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
 
   @override
   Widget build(BuildContext context) {
+    
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -70,12 +71,12 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                     child: Column(
                       children: [
                         Padding(
-                          padding:  EdgeInsets.all(0.038 * screenWidth),
+                          padding: EdgeInsets.all(0.038 * screenWidth),
                           child: Card(
                             elevation: 10,
                             color: backGroundColor.withOpacity(0.2),
                             child: Padding(
-                              padding:  EdgeInsets.all(0.02 * screenWidth),
+                              padding: EdgeInsets.all(0.02 * screenWidth),
                               child: ContainerWidget(
                                 borderColor: backGroundColor.withOpacity(0.2),
                                 widget: Column(
@@ -110,7 +111,9 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                             ? GestureDetector(
                                                 onTap: () {
                                                   _openBottomModalSheet(
-                                                      context , screenHeight , screenWidth);
+                                                      context,
+                                                      screenHeight,
+                                                      screenWidth);
                                                 },
                                                 child: const IconWidget(
                                                     icon: Icons.more_vert,
@@ -175,6 +178,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                             GestureDetector(
                                               onTap: _likePost,
                                               child: IconWidget(
+                                                  size: 35,
                                                   icon: (singlePost.likes!
                                                           .contains(
                                                               _currentUid))
@@ -197,16 +201,28 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                                     ));
                                               },
                                               child: const IconWidget(
+                                                  size: 35,
                                                   icon: Icons
                                                       .comment_bank_outlined,
                                                   color: primaryColor),
                                             ),
                                           ],
                                         ),
-                                        const IconWidget(
-                                            icon:
-                                                Icons.bookmark_border_outlined,
-                                            color: primaryColor),
+                                        GestureDetector(
+                                          onTap: _savePost,
+                                          child: IconWidget(
+                                            size: 35,
+                                            icon: (widget.post.savedPosts!
+                                                    .contains(_currentUid))
+                                                ? Icons.bookmark
+                                                : Icons
+                                                    .bookmark_border_outlined,
+                                            color: (widget.post.savedPosts!
+                                                    .contains(_currentUid))
+                                                ? blueColor
+                                                : primaryColor,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     sizeVer(0.012 * screenHeight),
@@ -251,25 +267,32 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
     );
   }
 
-  _openBottomModalSheet(BuildContext context , double screenHeight , double screenWidth) {
+  _savePost() {
+    BlocProvider.of<PostCubit>(context).savePost(
+      post: PostEntity(postId: widget.post.postId),
+    );
+  }
+
+  _openBottomModalSheet(
+      BuildContext context, double screenHeight, double screenWidth) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
-            height: 0.18 * screenHeight,
+           // height: 0.18 * screenHeight,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(
-                margin:  EdgeInsets.symmetric(vertical: 0.0255 * screenWidth),
+                margin: EdgeInsets.symmetric(vertical: 0.0255 * screenWidth),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Padding(
+                    Padding(
                       padding: EdgeInsets.only(left: 0.0255 * screenWidth),
                       child: const TextWidget(
                         txt: "More Options",
                         fontWeight: FontWeight.bold,
-                            fontsize: 18,
+                        fontsize: 18,
                       ),
                     ),
                     sizeVer(0.0121 * screenHeight),
@@ -292,7 +315,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                     const Divider(thickness: 1, color: secondaryColor),
                     sizeVer(0.0121 * screenHeight),
                     Padding(
-                      padding:  EdgeInsets.only(left: 0.0255 * screenWidth),
+                      padding: EdgeInsets.only(left: 0.0255 * screenWidth),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(

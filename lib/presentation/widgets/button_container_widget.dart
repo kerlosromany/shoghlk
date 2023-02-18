@@ -21,7 +21,7 @@ class ButtonContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        double screenHeight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: onTapListener,
@@ -40,9 +40,11 @@ class ButtonContainerWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Center(
-          child: TextWidget(
-            txt: "$text",
-            fontWeight: FontWeight.w600,
+          child: FittedBox(
+            child: TextWidget(
+              txt: "$text",
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

@@ -22,7 +22,6 @@ import 'package:shoghlak/presentation/cubits/credential/credential_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/reply/reply_cubit.dart';
-import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/user_cubit.dart';
 

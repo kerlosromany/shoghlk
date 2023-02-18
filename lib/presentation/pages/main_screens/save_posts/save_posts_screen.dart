@@ -72,7 +72,7 @@ class _SavePostsScreenState extends State<SavePostsScreen> {
                     child: ListView.builder(
                       itemCount: posts.length,
                       itemBuilder: (context, index) {
-                        return PostCardWidget(post: posts[index]);
+                        return PostCardWidget(post: posts[index] );
                       },
                     ),
                   );

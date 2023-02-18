@@ -23,7 +23,6 @@ Future main() async {
   await di.init();
   await CacheHelper.init();
 
-  
   runApp(const MyApp());
 }
 
@@ -52,10 +51,13 @@ class MyApp extends StatelessWidget {
           '/': (context) {
             return BlocBuilder<AuthCubit, AuthStates>(
               builder: (context, authState) {
-                if (authState is Authenticated &&
-                    CacheHelper.getData(key: "token") != null) {
+                if (authState is Authenticated) {
                   return MainScreen(uid: authState.uid);
-                } else {
+                }
+                if (CacheHelper.getData(key: "token") != null) {
+                  return MainScreen(uid: CacheHelper.getData(key: "token"));
+                }
+                else {
                   return const SignInPage();
                 }
               },

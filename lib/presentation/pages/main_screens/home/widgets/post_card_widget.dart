@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:shoghlak/domin/entities/post/post_entity.dart';
 import 'package:shoghlak/domin/use_cases/user/get_current_uid_usecase.dart';
 import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
-import 'package:shoghlak/presentation/cubits/ui/ui_cubit.dart';
-import 'package:shoghlak/presentation/cubits/ui/ui_states.dart';
 import 'package:shoghlak/presentation/pages/main_screens/profile/widgets/profile_widget.dart';
 import 'package:shoghlak/presentation/widgets/icon_widget.dart';
 import 'package:shoghlak/presentation/widgets/text_widget.dart';
@@ -13,6 +11,8 @@ import 'package:shoghlak/presentation/widgets/text_widget.dart';
 import '../../../../../consts.dart';
 import '../../../../../domin/entities/app_entity.dart';
 import '../../../../../on_generate_route.dart';
+import '../../../../cubits/user/get_single_user/get_single_user_cubit.dart';
+import '../../../../cubits/user/get_single_user/get_single_user_states.dart';
 import '../../../../widgets/container_widget.dart';
 
 import 'package:shoghlak/injection_container.dart' as di;
@@ -66,8 +66,21 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                           widget: ClipRRect(
                             borderRadius:
                                 BorderRadius.circular(0.08 * screenWidth),
-                            child: ProfileWidget(
-                                imageUrl: widget.post.userProfileUrl),
+                            child: BlocBuilder<GetSingleUserCubit,
+                                GetSingleUserStates>(
+                              builder: (context, getSingleUserState) {
+                                if (getSingleUserState is GetSingleUserLoaded) {
+                                  final currentUser = getSingleUserState.user;
+                                  return ProfileWidget(
+                                      imageUrl: currentUser.uid ==
+                                              widget.post.creatorUid
+                                          ? currentUser.profileUrl
+                                          : widget.post.userProfileUrl);
+                                }
+                                return ProfileWidget(
+                                    imageUrl: widget.post.userProfileUrl);
+                              },
+                            ),
                           ),
                         ),
                         sizeHor(0.026 * screenWidth),
@@ -96,7 +109,8 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                     widget: ProfileWidget(imageUrl: widget.post.postImageUrl),
                   ),
                 sizeVer(0.015 * screenHeight),
-                TextWidget(txt: "${widget.post.description}"),
+                SelectableText("${widget.post.description}",
+                    style: const TextStyle(color: primaryColor)),
                 sizeVer(0.015 * screenHeight),
                 InkWell(
                   onTap: () {
@@ -216,7 +230,7 @@ class _PostCardWidgetState extends State<PostCardWidget> {
         context: context,
         builder: (context) {
           return Container(
-            height: 0.18 * screenHeight,
+            //  height: 0.18 * screenHeight,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(

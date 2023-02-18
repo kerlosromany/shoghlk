@@ -39,6 +39,8 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: BlocConsumer<CredentialCubit, CredentialStates>(
         listener: (context, credentialState) {
@@ -57,12 +59,14 @@ class _SignInPageState extends State<SignInPage> {
                   CacheHelper.saveData(key: "token", value: authState.uid);
                   return MainScreen(uid: authState.uid);
                 } else {
-                  return _buildBody();
+                  return _buildBody(
+                      screenHeight: screenHeight, screenWidth: screenWidth);
                 }
               },
             );
           }
-          return _buildBody();
+          return _buildBody(
+              screenHeight: screenHeight, screenWidth: screenWidth);
         },
       ),
     );
@@ -86,13 +90,13 @@ class _SignInPageState extends State<SignInPage> {
     });
   }
 
-  _buildBody() {
+  _buildBody({required double screenHeight, required double screenWidth}) {
     return SafeArea(
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 15),
+            padding: EdgeInsets.only(top: 0.038 * screenWidth),
             alignment: Alignment.topCenter,
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -110,7 +114,7 @@ class _SignInPageState extends State<SignInPage> {
             child: ContainerWidget(
               alignment: Alignment.center,
               width: double.infinity,
-              height: 600,
+              height: 0.72 * screenHeight,
               color: backGroundColor.withOpacity(0.3),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(15),
@@ -121,16 +125,16 @@ class _SignInPageState extends State<SignInPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const ContainerWidget(
+                      ContainerWidget(
                         alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(left: 35),
-                        widget: TextWidget(
+                        padding: EdgeInsets.only(left: 0.089 * screenWidth),
+                        widget: const TextWidget(
                           txt: "Sign in",
                           fontsize: 40,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      sizeVer(30),
+                      sizeVer(0.036 * screenHeight),
                       FormContainerWidget(
                         controller: _emailController,
                         hintText: "Email",
@@ -144,7 +148,7 @@ class _SignInPageState extends State<SignInPage> {
                           return null;
                         },
                       ),
-                      sizeVer(15),
+                      sizeVer(0.018 * screenHeight),
                       FormContainerWidget(
                         controller: _passwordController,
                         hintText: "Password",
@@ -159,7 +163,7 @@ class _SignInPageState extends State<SignInPage> {
                           return null;
                         },
                       ),
-                      sizeVer(15),
+                      sizeVer(0.018 * screenHeight),
                       ButtonContainerWidget(
                         color: blueColor,
                         text: "Sign In",
@@ -169,40 +173,43 @@ class _SignInPageState extends State<SignInPage> {
                           }
                         },
                       ),
-                      sizeVer(15),
+                      sizeVer(0.018 * screenHeight),
                       _isSigningIn == true
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const TextWidget(txt: "Please wait"),
-                                sizeHor(10),
+                                sizeHor(0.0255 * screenWidth),
                                 const CircularProgressIndicatorWidget(),
                               ],
                             )
                           : const ContainerWidget(width: 0, height: 0),
-                      sizeVer(15),
+                      sizeVer(0.018 * screenHeight),
                       const Divider(color: secondaryColor),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const TextWidget(
-                            txt: "Don'\t have an account? ",
-                            color: darkGreyColor,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  ScreenName.signUpScreen, (route) => false);
-                            },
-                            child: const TextWidget(
-                              txt: "Sign Up",
-                              fontsize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: tealColor,
+                      FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const TextWidget(
+                              txt: "Don'\t have an account? ",
+                              color: darkGreyColor,
                             ),
-                          ),
-                        ],
-                      )
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamedAndRemoveUntil(context,
+                                    ScreenName.signUpScreen, (route) => false);
+                              },
+                              child: const TextWidget(
+                                txt: "Sign Up",
+                                fontsize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: tealColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      sizeVer(0.018 * screenHeight),
                     ],
                   ),
                 ),

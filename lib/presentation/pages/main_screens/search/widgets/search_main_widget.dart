@@ -85,7 +85,7 @@ class _SearchMainWidgetState extends State<SearchMainWidget> {
                                 itemCount: filterAllPosts.length,
                                 itemBuilder: (context, index) {
                                   return PostCardWidget(
-                                      post: filterAllPosts[index]);
+                                      post: filterAllPosts[index] );
                                 }),
                           )
                         : BlocBuilder<PostCubit, PostStates>(

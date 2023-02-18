@@ -124,6 +124,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         toast("user not found");
       } else if (e.code == "wrong-password") {
         toast("Invalid email or password");
+      } else {
+        toast(e.code);
       }
     }
   }
@@ -161,9 +163,12 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       return;
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
-        toast("email is already taken");
+        toast("Email is already taken");
+      } else if (e.code == "invalid-email") {
+        toast(
+            "Invalid email \n email must be written in a right way (example@gmail.com)");
       } else {
-        toast("something weent wrong");
+        toast(e.code);
       }
     }
   }
@@ -235,7 +240,6 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       totalLikes: 0,
       userName: post.userName,
       userProfileUrl: post.userProfileUrl,
-      
     ).toJson();
 
     try {

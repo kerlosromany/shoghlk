@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shoghlak/domin/use_cases/storage/upload_image_to_storage_usecase.dart';
+import 'package:shoghlak/presentation/cubits/post/post_cubit.dart';
 import 'package:shoghlak/presentation/cubits/user/user_cubit.dart';
 import 'package:shoghlak/presentation/pages/main_screens/profile/widgets/profile_form_widget.dart';
 import 'package:shoghlak/presentation/pages/main_screens/profile/widgets/profile_widget.dart';
@@ -13,6 +14,7 @@ import 'package:shoghlak/presentation/widgets/icon_widget.dart';
 import 'package:shoghlak/presentation/widgets/text_widget.dart';
 
 import '../../../../consts.dart';
+import '../../../../domin/entities/post/post_entity.dart';
 import '../../../../domin/entities/user/user_entity.dart';
 
 import 'package:shoghlak/injection_container.dart' as di;
@@ -80,7 +82,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               )),
           actions: [
             Padding(
-              padding:  EdgeInsets.only(right: 0.0255*screenWidth),
+              padding: EdgeInsets.only(right: 0.0255 * screenWidth),
               child: _isUpdating
                   ? const CircularProgressIndicatorWidget()
                   : InkWell(
@@ -103,13 +105,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 0.0255*screenWidth, vertical: 0.0255*screenWidth),
+            padding: EdgeInsets.symmetric(
+                horizontal: 0.0255 * screenWidth,
+                vertical: 0.0255 * screenWidth),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Center(
                     child: ContainerWidget(
-                      width: 0.3*screenWidth,
+                      width: 0.3 * screenWidth,
                       height: 0.15 * screenHeight,
                       widget: ClipRRect(
                         borderRadius: BorderRadius.circular(0.13 * screenWidth),
@@ -152,6 +156,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   _updateUserProfileData() {
+    setState(() {
+      _isUpdating = true;
+    });
     if (_image == null) {
       _updateUserProfile("");
     } else {
@@ -165,19 +172,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   _updateUserProfile(String profileUrl) {
-    setState(() {
-      _isUpdating = true;
-    });
     BlocProvider.of<UserCubit>(context)
         .updateUser(
             user: UserEntity(
-          bio: _bioController!.text,
-          name: _nameController!.text,
-          username: _userNameController!.text,
-          website: _websiteController!.text,
-          uid: widget.currentUser.uid,
-          profileUrl: profileUrl,
-        ))
+      bio: _bioController!.text,
+      name: _nameController!.text,
+      username: _userNameController!.text,
+      website: _websiteController!.text,
+      uid: widget.currentUser.uid,
+      profileUrl: profileUrl,
+    ))
         .then((value) => _clear());
   }
 

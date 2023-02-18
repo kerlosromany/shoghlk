@@ -33,63 +33,70 @@ class PostDetailsScreen extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(0.02 * screenWidth),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const TextWidget(
-                    txt: "Description", fontWeight: FontWeight.bold),
-                sizeVer(0.01 * screenHeight),
-                ContainerWidget(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(0.02 * screenWidth),
-                  borderWidth: 2,
-                  borderColor: backGroundColor,
-                  widget: SelectableText("${post.description}"),
-                ),
-                sizeVer(20),
-                const TextWidget(txt: "Details", fontWeight: FontWeight.bold),
-                sizeVer(0.01 * screenHeight),
-                ContainerWidget(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(0.02 * screenWidth),
-                  borderWidth: 2,
-                  borderColor: backGroundColor,
-                  widget: SelectableText("${post.details}"),
-                ),
-                sizeVer(0.02 * screenHeight),
-                const TextWidget(
-                    txt: "Phone number", fontWeight: FontWeight.bold),
-                sizeVer(0.01 * screenHeight),
-                ContainerWidget(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(0.02 * screenWidth),
-                  borderWidth: 2,
-                  borderColor: backGroundColor,
-                  widget: SelectableText("${post.phoneNo1}"),
-                ),
-                sizeVer(0.02 * screenHeight),
-                const TextWidget(
-                    txt: "Phone number", fontWeight: FontWeight.bold),
-                sizeVer(0.01 * screenHeight),
-                ContainerWidget(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(0.02 * screenWidth),
-                  borderWidth: 2,
-                  borderColor: backGroundColor,
-                  widget: SelectableText("${post.phoneNo2}"),
-                ),
-                sizeVer(0.02 * screenHeight),
-                const TextWidget(
-                    txt: "Communication Link", fontWeight: FontWeight.bold),
-                sizeVer(0.01 * screenHeight),
-                ContainerWidget(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(0.02 * screenWidth),
-                  borderWidth: 2,
-                  borderColor: backGroundColor,
-                  widget: SelectableText("${post.communicationLink}"),
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const TextWidget(
+                      txt: "Description", fontWeight: FontWeight.bold),
+                  sizeVer(0.01 * screenHeight),
+                  ContainerWidget(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(0.02 * screenWidth),
+                    borderWidth: 2,
+                    borderColor: backGroundColor,
+                    widget: SelectableText("${post.description}",
+                        style: const TextStyle(color: primaryColor)),
+                  ),
+                  sizeVer(20),
+                  const TextWidget(txt: "Details", fontWeight: FontWeight.bold),
+                  sizeVer(0.01 * screenHeight),
+                  ContainerWidget(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(0.02 * screenWidth),
+                    borderWidth: 2,
+                    borderColor: backGroundColor,
+                    widget: SelectableText("${post.details}",
+                        style: const TextStyle(color: primaryColor)),
+                  ),
+                  sizeVer(0.02 * screenHeight),
+                  const TextWidget(
+                      txt: "Phone number", fontWeight: FontWeight.bold),
+                  sizeVer(0.01 * screenHeight),
+                  ContainerWidget(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(0.02 * screenWidth),
+                    borderWidth: 2,
+                    borderColor: backGroundColor,
+                    widget: SelectableText("${post.phoneNo1}",
+                        style: const TextStyle(color: primaryColor)),
+                  ),
+                  sizeVer(0.02 * screenHeight),
+                  const TextWidget(
+                      txt: "Phone number", fontWeight: FontWeight.bold),
+                  sizeVer(0.01 * screenHeight),
+                  ContainerWidget(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(0.02 * screenWidth),
+                    borderWidth: 2,
+                    borderColor: backGroundColor,
+                    widget: SelectableText("${post.phoneNo2}",
+                        style: const TextStyle(color: primaryColor)),
+                  ),
+                  sizeVer(0.02 * screenHeight),
+                  const TextWidget(
+                      txt: "Communication Link", fontWeight: FontWeight.bold),
+                  sizeVer(0.01 * screenHeight),
+                  ContainerWidget(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(0.02 * screenWidth),
+                    borderWidth: 2,
+                    borderColor: backGroundColor,
+                    widget: SelectableText("${post.communicationLink}",
+                        style: const TextStyle(color: primaryColor)),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -102,45 +102,47 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                     sizeVer(4),
                     Padding(
                       padding: EdgeInsets.only(top: 0.025 * screenWidth),
-                      child: Row(
-                        children: [
-                          TextWidget(
-                            txt: DateFormat.yMMMMd()
-                                .format(widget.comment.createAt!.toDate()),
-                            fontsize: 12,
-                            color: darkGreyColor,
-                          ),
-                          sizeHor(0.038 * screenWidth),
-                          GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _isUserReplaying = !_isUserReplaying;
-                                });
-                              },
-                              child: const TextWidget(
-                                txt: "Replay",
-                                color: darkGreyColor,
-                                fontsize: 12,
-                              )),
-                          sizeHor(0.038 * screenWidth),
-                          GestureDetector(
-                            onTap: () {
-                              widget.comment.totalReplies == 0
-                                  ? toast("No Replys")
-                                  : BlocProvider.of<ReplyCubit>(context)
-                                      .getReplys(
-                                          reply: ReplyEntity(
-                                              postId: widget.comment.postId,
-                                              commentId:
-                                                  widget.comment.commentId));
-                            },
-                            child: const TextWidget(
-                              txt: "View Replays",
+                      child: FittedBox(
+                        child: Row(
+                          children: [
+                            TextWidget(
+                              txt: DateFormat.yMMMMd()
+                                  .format(widget.comment.createAt!.toDate()),
                               fontsize: 12,
                               color: darkGreyColor,
                             ),
-                          ),
-                        ],
+                            sizeHor(0.038 * screenWidth),
+                            GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isUserReplaying = !_isUserReplaying;
+                                  });
+                                },
+                                child: const TextWidget(
+                                  txt: "Replay",
+                                  color: darkGreyColor,
+                                  fontsize: 12,
+                                )),
+                            sizeHor(0.038 * screenWidth),
+                            GestureDetector(
+                              onTap: () {
+                                widget.comment.totalReplies == 0
+                                    ? toast("No Replys")
+                                    : BlocProvider.of<ReplyCubit>(context)
+                                        .getReplys(
+                                            reply: ReplyEntity(
+                                                postId: widget.comment.postId,
+                                                commentId:
+                                                    widget.comment.commentId));
+                              },
+                              child: const TextWidget(
+                                txt: "View Replays",
+                                fontsize: 12,
+                                color: darkGreyColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     BlocBuilder<ReplyCubit, ReplyStates>(
@@ -223,7 +225,6 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
         context: context,
         builder: (context) {
           return Container(
-            height: 150,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(
