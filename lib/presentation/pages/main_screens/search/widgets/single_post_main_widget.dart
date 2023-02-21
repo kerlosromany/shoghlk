@@ -10,6 +10,7 @@ import 'package:shoghlak/presentation/cubits/post/single_post/single_post_cubit.
 import 'package:shoghlak/presentation/cubits/post/single_post/single_post_states.dart';
 import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/widgets/circular_progress_indicator.dart';
+import 'package:shoghlak/presentation/widgets/loading/post_loading_widget.dart';
 
 import '../../../../../consts.dart';
 import '../../../../../domin/entities/app_entity.dart';
@@ -52,7 +53,6 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
 
   @override
   Widget build(BuildContext context) {
-    
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -127,7 +127,6 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                                         singlePost.postImageUrl != null)
                                       ContainerWidget(
                                         width: double.infinity,
-                                        height: 200,
                                         widget: ProfileWidget(
                                             imageUrl: singlePost.postImageUrl),
                                       ),
@@ -261,7 +260,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
                     ),
                   );
                 }
-                return const CircularProgressIndicatorWidget();
+                return const PostLoadingWidget();
               },
             ),
     );
@@ -279,7 +278,7 @@ class _SinglePostMainWidgetState extends State<SinglePostMainWidget> {
         context: context,
         builder: (context) {
           return Container(
-           // height: 0.18 * screenHeight,
+            // height: 0.18 * screenHeight,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(

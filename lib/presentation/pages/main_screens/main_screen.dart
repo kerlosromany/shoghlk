@@ -63,10 +63,12 @@ class _MainScreenState extends State<MainScreen> {
             ? const Scaffold(
                 backgroundColor: backGroundColor,
                 body: Center(
-                    child: FittedBox(
-                  child: TextWidget(
-                      txt: "No internet connection", color: primaryColor),
-                )))
+                  child: FittedBox(
+                    child: TextWidget(
+                        txt: "No internet connection", color: primaryColor),
+                  ),
+                ),
+              )
             : BlocBuilder<GetSingleUserCubit, GetSingleUserStates>(
                 builder: (context, getSingleUserState) {
                   if (getSingleUserState is GetSingleUserLoaded) {

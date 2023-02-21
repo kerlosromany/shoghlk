@@ -23,6 +23,8 @@ import '../../../../../../domin/entities/user/user_entity.dart';
 
 import 'package:shoghlak/injection_container.dart' as di;
 
+import '../../../../../widgets/loading/comment_loading_widget.dart';
+
 class CommentMainWidget extends StatefulWidget {
   final AppEntity appEntity;
   const CommentMainWidget({Key? key, required this.appEntity})
@@ -155,18 +157,36 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                           ],
                         );
                       }
-                      return const CircularProgressIndicatorWidget();
+                      return ListView.separated(
+                        itemBuilder: (context, index) =>
+                            const CommentLoadingWidget(),
+                        itemCount: 5,
+                        separatorBuilder: (context, index) => sizeVer(10),
+                      );
                     },
                   );
                 }
                 if (singlePostState is GetSinglePostLoading) {
-                  return const CircularProgressIndicatorWidget();
+                  return ListView.separated(
+                    itemBuilder: (context, index) =>
+                        const CommentLoadingWidget(),
+                    itemCount: 5,
+                    separatorBuilder: (context, index) => sizeVer(10),
+                  );
                 }
-                return const CircularProgressIndicatorWidget();
+                return ListView.separated(
+                  itemBuilder: (context, index) => const CommentLoadingWidget(),
+                  itemCount: 5,
+                  separatorBuilder: (context, index) => sizeVer(10),
+                );
               },
             );
           }
-          return const CircularProgressIndicatorWidget();
+          return ListView.separated(
+            itemBuilder: (context, index) => const CommentLoadingWidget(),
+            itemCount: 5,
+            separatorBuilder: (context, index) => sizeVer(10),
+          );
         },
       ),
     );
@@ -181,7 +201,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
         context: context,
         builder: (context) {
           return Container(
-          //  height: 0.18 * screenHeight,
+            //  height: 0.18 * screenHeight,
             decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(

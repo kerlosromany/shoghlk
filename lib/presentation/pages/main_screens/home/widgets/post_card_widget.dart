@@ -17,6 +17,8 @@ import '../../../../widgets/container_widget.dart';
 
 import 'package:shoghlak/injection_container.dart' as di;
 
+import '../../profile/single_user_profile_screen.dart';
+
 class PostCardWidget extends StatefulWidget {
   final PostEntity post;
   const PostCardWidget({super.key, required this.post});
@@ -31,9 +33,11 @@ class _PostCardWidgetState extends State<PostCardWidget> {
   @override
   void initState() {
     di.sl<GetCurrentUidUseCase>().call().then((value) {
-      setState(() {
-        _currentUid = value;
-      });
+      if (mounted) {
+        setState(() {
+          _currentUid = value;
+        });
+      }
     });
     super.initState();
   }
@@ -57,37 +61,54 @@ class _PostCardWidgetState extends State<PostCardWidget> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        ContainerWidget(
-                          width: 0.13 * screenWidth,
-                          height: 0.06 * screenHeight,
-                          borderColor: backGroundColor.withOpacity(0.2),
-                          widget: ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(0.08 * screenWidth),
-                            child: BlocBuilder<GetSingleUserCubit,
-                                GetSingleUserStates>(
-                              builder: (context, getSingleUserState) {
-                                if (getSingleUserState is GetSingleUserLoaded) {
-                                  final currentUser = getSingleUserState.user;
-                                  return ProfileWidget(
-                                      imageUrl: currentUser.uid ==
-                                              widget.post.creatorUid
-                                          ? currentUser.profileUrl
-                                          : widget.post.userProfileUrl);
-                                }
-                                return ProfileWidget(
-                                    imageUrl: widget.post.userProfileUrl);
-                              },
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SingleUserProfileScreen(
+                              otherUserId: widget.post.creatorUid!,
+                              profileUrl: widget.post.userProfileUrl!,
                             ),
                           ),
-                        ),
-                        sizeHor(0.026 * screenWidth),
-                        TextWidget(
-                          txt: "${widget.post.userName}",
-                        ),
-                      ],
+                        );
+                        // Navigator.pushNamed(
+                        //     context, ScreenName.singleUserProfileScreen,
+                        //     arguments: widget.post.creatorUid);
+                      },
+                      child: Row(
+                        children: [
+                          ContainerWidget(
+                            width: 0.13 * screenWidth,
+                            height: 0.06 * screenHeight,
+                            borderColor: backGroundColor.withOpacity(0.2),
+                            widget: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(0.08 * screenWidth),
+                              child: BlocBuilder<GetSingleUserCubit,
+                                  GetSingleUserStates>(
+                                builder: (context, getSingleUserState) {
+                                  if (getSingleUserState
+                                      is GetSingleUserLoaded) {
+                                    final currentUser = getSingleUserState.user;
+                                    return ProfileWidget(
+                                        imageUrl: currentUser.uid ==
+                                                widget.post.creatorUid
+                                            ? currentUser.profileUrl
+                                            : widget.post.userProfileUrl);
+                                  }
+                                  return ProfileWidget(
+                                      imageUrl: widget.post.userProfileUrl);
+                                },
+                              ),
+                            ),
+                          ),
+                          sizeHor(0.026 * screenWidth),
+                          TextWidget(
+                            txt: "${widget.post.userName}",
+                          ),
+                        ],
+                      ),
                     ),
                     widget.post.creatorUid == _currentUid
                         ? GestureDetector(

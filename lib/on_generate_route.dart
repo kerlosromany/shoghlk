@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoghlak/domin/entities/app_entity.dart';
 import 'package:shoghlak/domin/entities/comment/comment_entity.dart';
 import 'package:shoghlak/domin/entities/post/post_entity.dart';
 import 'package:shoghlak/domin/entities/reply/reply.dart';
 import 'package:shoghlak/domin/entities/user/user_entity.dart';
-import 'package:shoghlak/presentation/cubits/comment/comment_cubit.dart';
-import 'package:shoghlak/presentation/cubits/user/get_single_user/get_single_user_cubit.dart';
 import 'package:shoghlak/presentation/pages/credentials/sign_in_page.dart';
 import 'package:shoghlak/presentation/pages/credentials/sign_up_page.dart';
 import 'package:shoghlak/presentation/pages/main_screens/home/post_details_screen.dart';
@@ -17,7 +14,6 @@ import 'package:shoghlak/presentation/pages/main_screens/post/update_post_screen
 import 'package:shoghlak/presentation/pages/main_screens/profile/edit_profile_screen.dart';
 import 'package:shoghlak/presentation/pages/main_screens/search/single_post_details_screen.dart';
 
-import 'injection_container.dart' as di;
 
 class ScreenName {
   static const String editProfileScreen = 'editProfileScreen';
@@ -29,6 +25,7 @@ class ScreenName {
   static const String editCommentScreen = 'EditCommentScreen';
   static const String editReplyScreen = 'EditReplyScreen';
   static const String singlePostDetailsScreen = 'SinglePostDetailsScreen';
+  static const String singleUserProfileScreen = 'singleUserProfileScreen';
 }
 
 class OnGenerateRoute {
@@ -104,6 +101,15 @@ class OnGenerateRoute {
             return routeBuilder(const NoFoundScreen());
           }
         }
+
+      // case ScreenName.singleUserProfileScreen:
+      //   {
+      //     if (args is String) {
+      //       return routeBuilder(SingleUserProfileScreen(otherUserId: args));
+      //     } else {
+      //       return routeBuilder(const NoFoundScreen());
+      //     }
+      //   }
 
       default:
         return routeBuilder(const NoFoundScreen());
